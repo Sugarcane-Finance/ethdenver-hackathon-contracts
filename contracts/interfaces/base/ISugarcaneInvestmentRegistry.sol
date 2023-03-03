@@ -5,7 +5,7 @@ pragma solidity ^0.8.2;
 import "../../code/libs/SugarcaneLib.sol";
 import "../utils/ISugarcaneCore.sol";
 
-// The registry of what investments a given admin has
+// The registry of what investments a given signer has
 interface ISugarcaneInvestmentRegistry is ISugarcaneCore {
     // // // // // // // // // // // // // // // // // // // //
     // EVENTS
@@ -13,14 +13,14 @@ interface ISugarcaneInvestmentRegistry is ISugarcaneCore {
 
     /**
      * @notice Emitted when there is an investment added
-     * @param manager The admin that made the update
-     * @param adminAddress The admin address
+     * @param manager The manager address that made the update
+     * @param signerAddress The signer address
      * @param investmentId The id of the investment
-     * @param investmentIndex The index of the investment for this admin
+     * @param investmentIndex The index of the investment for this signer
      */
     event InvestmentAdded(
         address indexed manager,
-        address indexed adminAddress,
+        address indexed signerAddress,
         uint256 indexed investmentId,
         uint256 investmentIndex
     );
@@ -45,7 +45,7 @@ interface ISugarcaneInvestmentRegistry is ISugarcaneCore {
      * @notice Gets all the investments that have been added for this address
      * @return returns full list of the investment ids
      */
-    function investments(address adminAddress_)
+    function investments(address signerAddress_)
         external
         view
         returns (uint256[] memory);
@@ -60,10 +60,10 @@ interface ISugarcaneInvestmentRegistry is ISugarcaneCore {
         returns (SugarcaneLib.Investment memory);
 
     /**
-     * @notice Combines the admin address and the investment index to create a unique id
+     * @notice Combines the signer address and the investment index to create a unique id
      * @return returns the investment id
      */
-    function investmentIdHash(address adminAddress_, uint256 investmentIndex_)
+    function investmentIdHash(address signerAddress_, uint256 investmentIndex_)
         external
         view
         returns (uint256);
@@ -72,17 +72,17 @@ interface ISugarcaneInvestmentRegistry is ISugarcaneCore {
      * @notice Get the address of the manager
      * @return returns the address of the manager
      */
-    function managerAddress() external view returns (address);
+    function manager() external view returns (address);
 
     // // // // // // // // // // // // // // // // // // // //
     // CORE FUNCTIONS
     // // // // // // // // // // // // // // // // // // // //
 
     /**
-     * @notice Adds the investment to the admin
+     * @notice Adds the investment to the signer
      */
     function addInvestment(
-        address adminAddress_,
+        address signerAddress_,
         uint256 chainId_,
         uint256 protocolId_,
         uint256 initialAmountUsd_

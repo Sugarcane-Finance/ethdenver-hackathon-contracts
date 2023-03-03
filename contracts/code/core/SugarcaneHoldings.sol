@@ -8,7 +8,7 @@ import "../libs/SugarcaneLib.sol";
 import "../utils/SugarcaneCore.sol";
 import "../../interfaces/core/ISugarcaneHoldings.sol";
 
-// The smart contract wallet that the admin controls on various chains
+// The smart contract wallet that the signer controls on various chains
 contract SugarcaneHoldings is SugarcaneCore, ISugarcaneHoldings {
     // // // // // // // // // // // // // // // // // // // //
     // LIBRARIES AND STRUCTS
@@ -18,8 +18,8 @@ contract SugarcaneHoldings is SugarcaneCore, ISugarcaneHoldings {
     // VARIABLES - REMEMBER TO UPDATE __gap
     // // // // // // // // // // // // // // // // // // // //
 
-    uint256 internal _adminChainId;
-    address internal _admin;
+    uint256 internal _signerChainId;
+    address internal _signer;
 
     // // // // // // // // // // // // // // // // // // // //
     // CONSTRUCTOR
@@ -30,8 +30,14 @@ contract SugarcaneHoldings is SugarcaneCore, ISugarcaneHoldings {
     /**
      * @notice Initializes the contract.
      */
-    function initialize() public initializer {
+    function initialize(uint256 signerChainId_, address signerAddress_)
+        public
+        initializer
+    {
         __SugarcaneCore_init();
+
+        _signerChainId = signerChainId_;
+        _signer = signerAddress_;
 
         __SugarcaneHoldings_init_unchained();
     }
@@ -45,32 +51,51 @@ contract SugarcaneHoldings is SugarcaneCore, ISugarcaneHoldings {
     // // // // // // // // // // // // // // // // // // // //
     // GETTERS
     // // // // // // // // // // // // // // // // // // // //
-    /*
-    [READ] – admin() returns address
-    Sends back the address of the admin of the holdings wallet
-    */
 
-    /*
-    [READ] – adminChain() returns uint256
-    Sends back the chain id of the admin of the holdings wallet
-    */
+    /**
+     * @notice Sends back the address of the signer of the holdings wallet
+     * @return returns the address of the signer
+     */
+    function signer()
+        external
+        view
+        override
+        whenNotPausedExceptAdmin
+        returns (address)
+    {
+        return _signer;
+    }
+
+    /**
+     * @notice Sends back the chain id of the signer of the holdings wallet
+     * @return returns the chain id of the signer
+     */
+    function signerChainId()
+        external
+        view
+        override
+        whenNotPausedExceptAdmin
+        returns (uint256)
+    {
+        return _signerChainId;
+    }
 
     // // // // // // // // // // // // // // // // // // // //
     // CORE FUNCTIONS
     // // // // // // // // // // // // // // // // // // // //
     /*
 
-    [WRITE] – bridgeUsd(uint256 destinationChain_, address adminAddress_, uint256 amount_)
+    [WRITE] – bridgeUsd(uint256 destinationChain_, address signerAddress_, uint256 amount_)
     Sends the tokens to the destination chain
 
     [WRITE] – metaTransfer(address tokenAddress_, address toAddress_, uint256 amount_)
     A transaction where the gas was paid for by a separate party but the owner of the account is the only one that can move the assets
 
-    [WRITE] – setAdmin(uint256 chainId_, address adminAddress_)
-    Sets the admin address and the chain id of the admin
+    [WRITE] – setSigner(uint256 chainId_, address signerAddress_)
+    Sets the signer address and the chain id of the signer
 
     [WRITE] – transfer(address tokenAddress_, address toAddress_, uint256 amount_)
-    Moves the amount of tokens from the holdings to the admin address
+    Moves the amount of tokens from the holdings to the signer address
     */
 
     // // // // // // // // // // // // // // // // // // // //

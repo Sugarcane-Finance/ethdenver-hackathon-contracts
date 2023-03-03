@@ -8,7 +8,7 @@ import "../libs/SugarcaneLib.sol";
 import "../../interfaces/base/ISugarcaneInvestmentRegistry.sol";
 import "../utils/SugarcaneCore.sol";
 
-// The registry of what investments a given admin has
+// The registry of what investments a given signer has
 contract SugarcaneInvestmentRegistry is
     SugarcaneCore,
     ISugarcaneInvestmentRegistry
@@ -66,26 +66,26 @@ contract SugarcaneInvestmentRegistry is
      * @notice Gets all the investments that have been added for this address
      * @return returns full list of the investments
      */
-    function investments(address adminAddress_)
+    function investments(address signerAddress_)
         external
         view
         override
         whenNotPausedExceptAdmin
         returns (uint256[] memory)
     {
-        return _investments(adminAddress_);
+        return _investments(signerAddress_);
     }
 
     /**
      * @notice Gets all the investments that have been added for this address
      * @return returns full list of the investments
      */
-    function _investments(address adminAddress_)
+    function _investments(address signerAddress_)
         internal
         view
         returns (uint256[] memory)
     {
-        return _addressToInvestmentIds[adminAddress_];
+        return _addressToInvestmentIds[signerAddress_];
     }
 
     /**
@@ -115,31 +115,33 @@ contract SugarcaneInvestmentRegistry is
     }
 
     /**
-     * @notice Combines the admin address and the investment index to create a unique id
+     * @notice Combines the signer address and the investment index to create a unique id
      * @return returns the investment id
      */
-    function investmentIdHash(address adminAddress_, uint256 investmentIndex_)
+    function investmentIdHash(address signerAddress_, uint256 investmentIndex_)
         external
         view
         override
         whenNotPausedExceptAdmin
         returns (uint256)
     {
-        return _investmentIdHash(adminAddress_, investmentIndex_);
+        return _investmentIdHash(signerAddress_, investmentIndex_);
     }
 
     /**
-     * @notice Combines the admin address and the investment index to create a unique id
+     * @notice Combines the signer address and the investment index to create a unique id
      * @return returns the investment id
      */
-    function _investmentIdHash(address adminAddress_, uint256 investmentIndex)
+    function _investmentIdHash(address signerAddress_, uint256 investmentIndex)
         internal
         pure
         returns (uint256)
     {
         return
             uint256(
-                keccak256(abi.encodePacked(adminAddress_, "-", investmentIndex))
+                keccak256(
+                    abi.encodePacked(signerAddress_, "-", investmentIndex)
+                )
             );
     }
 
@@ -147,7 +149,7 @@ contract SugarcaneInvestmentRegistry is
      * @notice Get the address of the manager
      * @return returns the address of the manager
      */
-    function managerAddress()
+    function manager()
         external
         view
         override
@@ -162,37 +164,43 @@ contract SugarcaneInvestmentRegistry is
     // // // // // // // // // // // // // // // // // // // //
 
     /**
-     * @notice Adds the investment to the admin
+     * @notice Adds the investment to the signer
      */
     function addInvestment(
-        address adminAddress_,
+        address signerAddress_,
         uint256 chainId_,
         uint256 protocolId_,
         uint256 initialAmountUsd_
     ) external override whenNotPausedExceptAdmin onlyManager {
-        _addInvestment(adminAddress_, chainId_, protocolId_, initialAmountUsd_);
+        _addInvestment(
+            signerAddress_,
+            chainId_,
+            protocolId_,
+            initialAmountUsd_
+        );
     }
 
     /**
-     * @notice Adds the investment to the admin
+     * @notice Adds the investment to the signer
      */
     function _addInvestment(
-        address adminAddress_,
+        address signerAddress_,
         uint256 chainId_,
         uint256 protocolId_,
         uint256 initialAmountUsd_
     ) internal {
-        uint256 investmentIndex = _addressToInvestmentIds[adminAddress_].length;
+        uint256 investmentIndex = _addressToInvestmentIds[signerAddress_]
+            .length;
 
         // Create the investment id
         uint256 investmentId = _investmentIdHash(
-            adminAddress_,
+            signerAddress_,
             investmentIndex
         );
 
         // Add the id to the list of investments that is user has
         uint256[] storage currentInvestmentListing = _addressToInvestmentIds[
-            adminAddress_
+            signerAddress_
         ];
         currentInvestmentListing.push(investmentId);
 
@@ -206,7 +214,7 @@ contract SugarcaneInvestmentRegistry is
 
         emit InvestmentAdded(
             _msgSender(),
-            adminAddress_,
+            signerAddress_,
             investmentId,
             investmentIndex
         );

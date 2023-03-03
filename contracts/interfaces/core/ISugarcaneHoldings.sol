@@ -5,7 +5,7 @@ pragma solidity ^0.8.2;
 import "../../code/libs/SugarcaneLib.sol";
 import "../utils/ISugarcaneCore.sol";
 
-// The smart contract wallet that the admin controls on various chains
+// The smart contract wallet that the signer controls on various chains
 interface ISugarcaneHoldings is ISugarcaneCore {
     // // // // // // // // // // // // // // // // // // // //
     // EVENTS
@@ -13,27 +13,33 @@ interface ISugarcaneHoldings is ISugarcaneCore {
     // // // // // // // // // // // // // // // // // // // //
     // GETTERS
     // // // // // // // // // // // // // // // // // // // //
-    /*
-    [READ] – admin() returns address
-    Sends back the address of the admin of the holdings wallet
 
-    [READ] – adminChain() returns uint256
-    Sends back the chain id of the admin of the holdings wallet
-    */
+    /**
+     * @notice Sends back the address of the signer of the holdings wallet
+     * @return returns the address of the signer
+     */
+    function signer() external view returns (address);
+
+    /**
+     * @notice Sends back the chain id of the signer of the holdings wallet
+     * @return returns the chain id of the signer
+     */
+    function signerChainId() external view returns (uint256);
+
     // // // // // // // // // // // // // // // // // // // //
     // CORE FUNCTIONS
     // // // // // // // // // // // // // // // // // // // //
     /*
-    [WRITE] – bridgeUsd(uint256 destinationChain_, address adminAddress_, uint256 amount_)
+    [WRITE] – bridgeUsd(uint256 destinationChain_, address signerAddress_, uint256 amount_)
     Sends the tokens to the destination chain
 
     [WRITE] – metaTransfer(address tokenAddress_, address toAddress_, uint256 amount_)
     A transaction where the gas was paid for by a separate party but the owner of the account is the only one that can move the assets
 
-    [WRITE] – setAdmin(uint256 chainId_, address adminAddress_)
-    Sets the admin address and the chain id of the admin
+    [WRITE] – setSigner(uint256 chainId_, address signerAddress_)
+    Sets the signer address and the chain id of the signer
 
     [WRITE] – transfer(address tokenAddress_, address toAddress_, uint256 amount_)
-    Moves the amount of tokens from the holdings to the admin address
+    Moves the amount of tokens from the holdings to the to address
     */
 }
