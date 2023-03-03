@@ -19,6 +19,7 @@
     }
   },
   "devDependencies": {
+    "@axelar-network/axelar-gmp-sdk-solidity": "^3.2.1",
     "@ethersproject/experimental": "^5.7.0",
     "@nomiclabs/hardhat-ethers": "^2.2.2",
     "@nomiclabs/hardhat-etherscan": "^3.1.6",

@@ -3,6 +3,8 @@ pragma solidity ^0.8.2;
 
 // Libraries
 import "@openzeppelin/contracts-upgradeable/utils/math/SafeMathUpgradeable.sol";
+import {IAxelarGasService} from "@axelar-network/axelar-gmp-sdk-solidity/contracts/interfaces/IAxelarGasService.sol";
+import {IAxelarGateway} from "@axelar-network/axelar-gmp-sdk-solidity/contracts/interfaces/IAxelarGateway.sol";
 
 // Local imports
 import "../libs/StringOperations.sol";
@@ -12,7 +14,7 @@ import "../libs/SugarcaneLib.sol";
 import "../../interfaces/core/ISugarcaneManagerBase.sol";
 
 //  Abstract class that the managers on primary and secondary chains will inherit
-contract SugarcaneManagerBase is ISugarcaneManagerBase {
+abstract contract SugarcaneManagerBase is ISugarcaneManagerBase {
     // // // // // // // // // // // // // // // // // // // //
     // LIBRARIES AND STRUCTS
     // // // // // // // // // // // // // // // // // // // //
@@ -23,21 +25,19 @@ contract SugarcaneManagerBase is ISugarcaneManagerBase {
     // // // // // // // // // // // // // // // // // // // //
     // VARIABLES - REMEMBER TO UPDATE __gap
     // // // // // // // // // // // // // // // // // // // //
+    IAxelarGateway internal _gateway;
+    IAxelarGasService internal _gasService;
 
     // // // // // // // // // // // // // // // // // // // //
     // CONSTRUCTOR
     // // // // // // // // // // // // // // // // // // // //
-    /// @custom:oz-upgrades-unsafe-allow constructor
-    constructor() initializer {}
-
-    /**
-     * @notice Initializes the contract.
-     */
-    function initialize() public initializer {
-        __SugarcaneManagerBase_init_unchained();
+    function __SugarcaneManagerBase_init(address gateway_, address gasService_)
+        internal
+        initializer
+    {
+        _gateway = IAxelarGateway(gateway_);
+        _gasService = IAxelarGasService(gasService_);
     }
-
-    function __SugarcaneManagerBase_init_unchained() internal initializer {}
 
     // // // // // // // // // // // // // // // // // // // //
     // MODIFIERS
@@ -82,5 +82,5 @@ contract SugarcaneManagerBase is ISugarcaneManagerBase {
     // // // // // // // // // // // // // // // // // // // //
 
     // Gap for more space
-    uint256[50] private __gap;
+    uint256[48] private __gap;
 }

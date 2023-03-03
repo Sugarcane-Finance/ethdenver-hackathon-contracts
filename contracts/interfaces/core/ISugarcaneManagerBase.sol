@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.2;
 
-// Connected parts of the engine
+// Connected parts of the system
 import "../../code/libs/SugarcaneLib.sol";
 
 //  Abstract class that the managers on primary and secondary chains will inherit
