@@ -1,38 +1,22 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.2;
 
-// Libraries
-import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
-import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/utils/math/SafeMathUpgradeable.sol";
-
 // Local imports
 import "../libs/StringOperations.sol";
 import "../libs/SugarcaneLib.sol";
 
 // Interface imports
 import "../../interfaces/base/ISugarcaneInvestmentRegistry.sol";
+import "../utils/SugarcaneCore.sol";
 
 // The registry of what investments a given admin has
 contract SugarcaneInvestmentRegistry is
-    Initializable,
-    ContextUpgradeable,
-    AccessControlUpgradeable,
-    PausableUpgradeable,
-    ReentrancyGuardUpgradeable,
-    UUPSUpgradeable,
+    SugarcaneCore,
     ISugarcaneInvestmentRegistry
 {
     // // // // // // // // // // // // // // // // // // // //
     // LIBRARIES AND STRUCTS
     // // // // // // // // // // // // // // // // // // // //
-
-    using SafeMathUpgradeable for uint256;
-    using StringOperations for string;
 
     // // // // // // // // // // // // // // // // // // // //
     // VARIABLES - REMEMBER TO UPDATE __gap
@@ -53,11 +37,7 @@ contract SugarcaneInvestmentRegistry is
      * @notice Initializes the contract.
      */
     function initialize() public initializer {
-        __Context_init();
-        __AccessControl_init();
-        __Pausable_init();
-        __ReentrancyGuard_init();
-        __UUPSUpgradeable_init();
+        __SugarcaneCore_init();
 
         __SugarcaneInvestmentRegistry_init_unchained();
     }
@@ -71,6 +51,14 @@ contract SugarcaneInvestmentRegistry is
     // MODIFIERS
     // // // // // // // // // // // // // // // // // // // //
 
+    /**
+     * @notice Throws if message sender called by any account other than the manager contract.
+     */
+    modifier onlyManager() {
+        require(_manager == _msgSender(), "InvestmentRegistry: not manager");
+        _;
+    }
+
     // // // // // // // // // // // // // // // // // // // //
     // GETTERS
     // // // // // // // // // // // // // // // // // // // //
@@ -83,6 +71,7 @@ contract SugarcaneInvestmentRegistry is
         external
         view
         override
+        whenNotPausedExceptAdmin
         returns (uint256[] memory)
     {
         return _investments(adminAddress_);
@@ -108,9 +97,10 @@ contract SugarcaneInvestmentRegistry is
         external
         view
         override
+        whenNotPausedExceptAdmin
         returns (SugarcaneLib.Investment memory)
     {
-        return _investmentDetails(adminAddress_);
+        return _investmentDetails(investmentId_);
     }
 
     /**
@@ -133,6 +123,7 @@ contract SugarcaneInvestmentRegistry is
         external
         pure
         override
+        whenNotPausedExceptAdmin
         returns (uint256)
     {
         return _investmentIdHash(adminAddress_, investmentIndex_);
@@ -157,15 +148,13 @@ contract SugarcaneInvestmentRegistry is
      * @notice Get the address of the manager
      * @return returns the address of the manager
      */
-    function managerAddress() external view override returns (address) {
-        return _managerAddress();
-    }
-
-    /**
-     * @notice Get the address of the manager
-     * @return returns the address of the manager
-     */
-    function _managerAddress() internal view returns (address) {
+    function managerAddress()
+        external
+        view
+        override
+        whenNotPausedExceptAdmin
+        returns (address)
+    {
         return _manager;
     }
 
@@ -181,7 +170,7 @@ contract SugarcaneInvestmentRegistry is
         uint256 chainId_,
         uint256 protocolId_,
         uint256 initialAmountUsd_
-    ) external override {
+    ) external override whenNotPausedExceptAdmin onlyManager {
         _addInvestment(adminAddress_, chainId_, protocolId_, initialAmountUsd_);
     }
 
@@ -227,7 +216,12 @@ contract SugarcaneInvestmentRegistry is
     /**
      * @notice Updates the manager contract location
      */
-    function setManager(address managerAddress_) external override {
+    function setManager(address managerAddress_)
+        external
+        override
+        whenNotPausedExceptAdmin
+        onlySugarcaneAdmin
+    {
         _setManager(managerAddress_);
     }
 

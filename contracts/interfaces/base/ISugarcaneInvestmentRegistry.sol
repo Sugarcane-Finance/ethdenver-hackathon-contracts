@@ -1,26 +1,25 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.2;
 
-import "@openzeppelin/contracts-upgradeable/access/IAccessControlUpgradeable.sol";
-
 // Connected parts of the system
 import "../../code/libs/SugarcaneLib.sol";
+import "../utils/ISugarcaneCore.sol";
 
 // The registry of what investments a given admin has
-interface ISugarcaneInvestmentRegistry is IAccessControlUpgradeable {
+interface ISugarcaneInvestmentRegistry is ISugarcaneCore {
     // // // // // // // // // // // // // // // // // // // //
     // EVENTS
     // // // // // // // // // // // // // // // // // // // //
 
     /**
      * @notice Emitted when there is an investment added
-     * @param operator The admin that made the update
+     * @param manager The admin that made the update
      * @param adminAddress The admin address
      * @param investmentId The id of the investment
      * @param investmentIndex The index of the investment for this admin
      */
     event InvestmentAdded(
-        address indexed operator,
+        address indexed manager,
         address indexed adminAddress,
         uint256 indexed investmentId,
         uint256 investmentIndex
@@ -28,12 +27,12 @@ interface ISugarcaneInvestmentRegistry is IAccessControlUpgradeable {
 
     /**
      * @notice Emitted when the manager is address is updated
-     * @param operator The admin that made the update
+     * @param sugarcaneAdmin The admin that made the update
      * @param oldManagerAddress The old manager address
      * @param newManagerAddress The new manager address
      */
     event ManagerUpdated(
-        address indexed operator,
+        address indexed sugarcaneAdmin,
         address indexed oldManagerAddress,
         address indexed newManagerAddress
     );
@@ -44,7 +43,7 @@ interface ISugarcaneInvestmentRegistry is IAccessControlUpgradeable {
 
     /**
      * @notice Gets all the investments that have been added for this address
-     * @return returns full list of the investments
+     * @return returns full list of the investment ids
      */
     function investments(address adminAddress_)
         external
