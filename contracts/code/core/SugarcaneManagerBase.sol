@@ -2,25 +2,21 @@
 pragma solidity ^0.8.2;
 
 // Libraries
-import "@openzeppelin/contracts-upgradeable/utils/math/SafeMathUpgradeable.sol";
 import {IAxelarGasService} from "@axelar-network/axelar-gmp-sdk-solidity/contracts/interfaces/IAxelarGasService.sol";
 import {IAxelarGateway} from "@axelar-network/axelar-gmp-sdk-solidity/contracts/interfaces/IAxelarGateway.sol";
 
 // Local imports
-import "../libs/StringOperations.sol";
 import "../libs/SugarcaneLib.sol";
 
 // Interface imports
 import "../../interfaces/core/ISugarcaneManagerBase.sol";
+import "../utils/SugarcaneCore.sol";
 
 //  Abstract class that the managers on primary and secondary chains will inherit
-abstract contract SugarcaneManagerBase is ISugarcaneManagerBase {
+abstract contract SugarcaneManagerBase is SugarcaneCore, ISugarcaneManagerBase {
     // // // // // // // // // // // // // // // // // // // //
     // LIBRARIES AND STRUCTS
     // // // // // // // // // // // // // // // // // // // //
-
-    using SafeMathUpgradeable for uint256;
-    using StringOperations for string;
 
     // // // // // // // // // // // // // // // // // // // //
     // VARIABLES - REMEMBER TO UPDATE __gap
@@ -35,6 +31,8 @@ abstract contract SugarcaneManagerBase is ISugarcaneManagerBase {
         internal
         initializer
     {
+        __SugarcaneCore_init();
+
         _gateway = IAxelarGateway(gateway_);
         _gasService = IAxelarGasService(gasService_);
     }

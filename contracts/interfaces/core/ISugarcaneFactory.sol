@@ -2,10 +2,10 @@
 pragma solidity ^0.8.2;
 
 // Connected parts of the system
-import "../../code/libs/SugarcaneLib.sol";
+import "../utils/ISugarcaneCore.sol";
 
 // The contract that produces more holdings contracts
-interface ISugarcaneFactory {
+interface ISugarcaneFactory is ISugarcaneCore {
     // // // // // // // // // // // // // // // // // // // //
     // EVENTS
     // // // // // // // // // // // // // // // // // // // //

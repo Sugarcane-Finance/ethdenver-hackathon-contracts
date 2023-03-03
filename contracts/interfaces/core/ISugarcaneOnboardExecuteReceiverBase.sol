@@ -3,9 +3,10 @@ pragma solidity ^0.8.2;
 
 // Connected parts of the system
 import "../../code/libs/SugarcaneLib.sol";
+import "../utils/ISugarcaneCore.sol";
 
 // The contract on the secondary chains that updates the manager
-interface ISugarcaneOnboardExecuteReceiverBase {
+interface ISugarcaneOnboardExecuteReceiverBase is ISugarcaneCore {
     // // // // // // // // // // // // // // // // // // // //
     // EVENTS
     // // // // // // // // // // // // // // // // // // // //

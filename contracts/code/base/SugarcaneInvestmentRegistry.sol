@@ -2,7 +2,6 @@
 pragma solidity ^0.8.2;
 
 // Local imports
-import "../libs/StringOperations.sol";
 import "../libs/SugarcaneLib.sol";
 
 // Interface imports
@@ -121,7 +120,7 @@ contract SugarcaneInvestmentRegistry is
      */
     function investmentIdHash(address adminAddress_, uint256 investmentIndex_)
         external
-        pure
+        view
         override
         whenNotPausedExceptAdmin
         returns (uint256)
@@ -183,7 +182,7 @@ contract SugarcaneInvestmentRegistry is
         uint256 protocolId_,
         uint256 initialAmountUsd_
     ) internal {
-        uint256 investmentIndex = _addressToInvestmentIds.length;
+        uint256 investmentIndex = _addressToInvestmentIds[adminAddress_].length;
 
         // Create the investment id
         uint256 investmentId = _investmentIdHash(

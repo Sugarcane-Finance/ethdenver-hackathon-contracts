@@ -1,25 +1,20 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.2;
 
-// Libraries
-import "@openzeppelin/contracts-upgradeable/utils/math/SafeMathUpgradeable.sol";
-
 // Local imports
-import "../libs/StringOperations.sol";
 import "../libs/SugarcaneLib.sol";
 
 // Interface imports
 import "../../interfaces/core/ISugarcaneOnboardExecuteReceiverBase.sol";
+import "../utils/SugarcaneCore.sol";
 
 abstract contract SugarcaneOnboardExecuteReceiverBase is
+    SugarcaneCore,
     ISugarcaneOnboardExecuteReceiverBase
 {
     // // // // // // // // // // // // // // // // // // // //
     // LIBRARIES AND STRUCTS
     // // // // // // // // // // // // // // // // // // // //
-
-    using SafeMathUpgradeable for uint256;
-    using StringOperations for string;
 
     // // // // // // // // // // // // // // // // // // // //
     // VARIABLES - REMEMBER TO UPDATE __gap
@@ -34,6 +29,8 @@ abstract contract SugarcaneOnboardExecuteReceiverBase is
         internal
         initializer
     {
+        __SugarcaneCore_init();
+
         _managerAddress = managerAddress_;
     }
 

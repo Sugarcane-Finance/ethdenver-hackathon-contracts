@@ -65,7 +65,7 @@ interface ISugarcaneInvestmentRegistry is ISugarcaneCore {
      */
     function investmentIdHash(address adminAddress_, uint256 investmentIndex_)
         external
-        pure
+        view
         returns (uint256);
 
     /**
