@@ -1,20 +1,29 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.2;
 
-import "@openzeppelin/contracts/utils/Strings.sol";
+// Overall imports
 import "@openzeppelin/contracts-upgradeable/token/ERC1155/ERC1155Upgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC1155/extensions/ERC1155SupplyUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
-import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/utils/StringsUpgradeable.sol";
+
+// Local imports
+import "../utils/SugarcaneCore.sol";
 
 contract SugarcaneBadge is
-    Initializable,
+    SugarcaneCore,
     ERC1155Upgradeable,
-    OwnableUpgradeable,
-    ERC1155SupplyUpgradeable,
-    UUPSUpgradeable
+    ERC1155SupplyUpgradeable
 {
+    // // // // // // // // // // // // // // // // // // // //
+    // LIBRARIES AND STRUCTS
+    // // // // // // // // // // // // // // // // // // // //
+
+    using StringsUpgradeable for uint256;
+
+    // // // // // // // // // // // // // // // // // // // //
+    // VARIABLES - REMEMBER TO UPDATE __gap
+    // // // // // // // // // // // // // // // // // // // //
+
     uint256 public constant MARKET_MAKER = 0;
     uint256 public constant STAKER = 1;
     uint256 public constant LENDER = 2;
@@ -27,26 +36,40 @@ contract SugarcaneBadge is
     }
 
     function initialize(address managerAddress_) public initializer {
+        __SugarcaneCore_init();
+
         __ERC1155_init("");
-        __Ownable_init();
         __ERC1155Supply_init();
-        __UUPSUpgradeable_init();
 
         _managerAddress = managerAddress_;
     }
 
-    function setURI(string memory newuri) public onlyOwner {
+    function supportsInterface(bytes4 interfaceId)
+        public
+        view
+        virtual
+        override(ERC1155Upgradeable, AccessControlUpgradeable)
+        returns (bool)
+    {
+        return super.supportsInterface(interfaceId);
+    }
+
+    function setURI(string memory newuri) public onlySugarcaneAdmin {
         _setURI(newuri);
     }
 
-    function uri(
-        uint256 badgeId
-    ) public view virtual override returns (string memory) {
+    function uri(uint256 badgeId)
+        public
+        view
+        virtual
+        override
+        returns (string memory)
+    {
         return
             string(
                 abi.encodePacked(
                     "https://sugarcane.infura-ipfs.io/ipfs/QmdPqKhoYKbrqDx1jCEjPpHdi86nHdfcJS6ZJfKZQcbTJa/metadata/",
-                    Strings.toString(badgeId),
+                    badgeId.toString(),
                     ".json"
                 )
             );
@@ -55,10 +78,6 @@ contract SugarcaneBadge is
     function managerAddress() public view returns (address) {
         return _managerAddress;
     }
-
-    function _authorizeUpgrade(
-        address newImplementation
-    ) internal override onlyOwner {}
 
     // The following functions are overrides required by Solidity.
 
