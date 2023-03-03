@@ -10,7 +10,9 @@
     "lint": "prettier --list-different 'contracts/**/*.sol'",
     "status": "./node_modules/.bin/solhint -f table contracts/**/*.sol",
     "test": "hh test --network hardhat",
+    "run-local-node": "hh node --hostname 0.0.0.0",
     "console-local": "npx hardhat console --network localhost",
+    "exec-deploy-test": "npx hardhat run scripts/_deployTest.ts --network localhost",
     "exec-playground": "npx hardhat run scripts/_playground.ts --network localhost"
   },
   "husky": {
