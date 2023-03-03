@@ -1,24 +1,18 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.2;
 
-// Libraries
-import "@openzeppelin/contracts-upgradeable/utils/math/SafeMathUpgradeable.sol";
-
 // Local imports
-import "../libs/StringOperations.sol";
 import "../libs/SugarcaneLib.sol";
 
 // Interface imports
+import "../utils/SugarcaneCore.sol";
 import "../../interfaces/core/ISugarcaneHoldings.sol";
 
 // The smart contract wallet that the admin controls on various chains
-contract SugarcaneHoldings is ISugarcaneHoldings {
+contract SugarcaneHoldings is SugarcaneCore, ISugarcaneHoldings {
     // // // // // // // // // // // // // // // // // // // //
     // LIBRARIES AND STRUCTS
     // // // // // // // // // // // // // // // // // // // //
-
-    using SafeMathUpgradeable for uint256;
-    using StringOperations for string;
 
     // // // // // // // // // // // // // // // // // // // //
     // VARIABLES - REMEMBER TO UPDATE __gap
@@ -37,6 +31,8 @@ contract SugarcaneHoldings is ISugarcaneHoldings {
      * @notice Initializes the contract.
      */
     function initialize() public initializer {
+        __SugarcaneCore_init();
+
         __SugarcaneHoldings_init_unchained();
     }
 
