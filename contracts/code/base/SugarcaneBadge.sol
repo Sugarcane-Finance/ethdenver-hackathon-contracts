@@ -52,9 +52,7 @@ contract SugarcaneBadge is
         _managerAddress = managerAddress_;
     }
 
-    function supportsInterface(
-        bytes4 interfaceId
-    )
+    function supportsInterface(bytes4 interfaceId)
         public
         view
         virtual
@@ -68,9 +66,13 @@ contract SugarcaneBadge is
         _setURI(newuri);
     }
 
-    function uri(
-        uint256 badgeId
-    ) public view virtual override returns (string memory) {
+    function uri(uint256 badgeId)
+        public
+        view
+        virtual
+        override
+        returns (string memory)
+    {
         return
             string(
                 abi.encodePacked(
@@ -85,9 +87,10 @@ contract SugarcaneBadge is
         return _managerAddress;
     }
 
-    function setManagerAddress(
-        address managerAddress_
-    ) public onlySugarcaneAdmin {
+    function setManagerAddress(address managerAddress_)
+        public
+        onlySugarcaneAdmin
+    {
         _managerAddress = managerAddress_;
     }
 
@@ -122,4 +125,11 @@ contract SugarcaneBadge is
         require(balanceOf(to, id) == 0, "User already has badge.");
         _mint(to, id, amount, "");
     }
+
+    // // // // // // // // // // // // // // // // // // // //
+    // GAP
+    // // // // // // // // // // // // // // // // // // // //
+
+    // Gap for more space
+    uint256[49] private __gap;
 }
