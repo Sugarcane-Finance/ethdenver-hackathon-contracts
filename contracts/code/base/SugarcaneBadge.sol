@@ -7,14 +7,12 @@ import "@openzeppelin/contracts-upgradeable/token/ERC1155/extensions/ERC1155Supp
 import "@openzeppelin/contracts-upgradeable/utils/StringsUpgradeable.sol";
 
 // Local imports
-import "../../interfaces/base/ISugarcaneBadge.sol";
 import "../utils/ManagerUtil.sol";
 
 contract SugarcaneBadge is
-    ManagerUtil,
     ERC1155Upgradeable,
     ERC1155SupplyUpgradeable,
-    ISugarcaneBadge
+    ManagerUtil
 {
     // // // // // // // // // // // // // // // // // // // //
     // LIBRARIES AND STRUCTS

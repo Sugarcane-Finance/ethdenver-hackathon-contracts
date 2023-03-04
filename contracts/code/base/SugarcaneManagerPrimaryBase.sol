@@ -64,7 +64,7 @@ contract SugarcaneManagerPrimaryBase is
     /**
      * @notice Sends back the address of the badge
      */
-    function sugarcaneBadge() external view returns (address) {
+    function sugarcaneBadge() external view override returns (address) {
         return __sugarcaneBadge;
     }
 
@@ -79,7 +79,7 @@ contract SugarcaneManagerPrimaryBase is
     /**
      * @notice Sends back the address of the investment registry
      */
-    function investmentRegistry() external view returns (address) {
+    function investmentRegistry() external view override returns (address) {
         return __investmentRegistry;
     }
 
@@ -106,7 +106,7 @@ contract SugarcaneManagerPrimaryBase is
         uint256 chainId_,
         uint256 protocolId_,
         uint256 initialAmountUsd_
-    ) external nonReentrant onlySugarcaneAdmin {
+    ) external override nonReentrant onlySugarcaneAdmin {
         // Add the investment for this user
         _investmentRegistry().addInvestment(
             signerAddress_,
@@ -118,10 +118,10 @@ contract SugarcaneManagerPrimaryBase is
         // Mint the badges
         // Get the number of investments for this signer
         uint256[] memory overallInvestmentListing = _investmentRegistry()
-            .investmentsForProtocol(signerAddress_, protocolId_);
+            .investments(signerAddress_);
         uint256[]
             memory protocolSpecificInvestmentListing = _investmentRegistry()
-                .investments(signerAddress_, protocolId_);
+                .investmentsForProtocol(signerAddress_, protocolId_);
 
         // Check badges for overall usage
         if (overallInvestmentListing.length == 1) {

@@ -9,7 +9,7 @@ import "../../code/libs/SugarcaneLib.sol";
 import "../utils/IManagerUtil.sol";
 
 // The badge interface
-interface ISugarcaneBadge is IManagerUtil {
+interface ISugarcaneBadge is IERC1155Upgradeable, IManagerUtil {
     // // // // // // // // // // // // // // // // // // // //
     // EVENTS
     // // // // // // // // // // // // // // // // // // // //
@@ -24,7 +24,7 @@ interface ISugarcaneBadge is IManagerUtil {
     function totalSupply(uint256 id) external view returns (uint256);
 
     /**
-     * * TAKEN FROM ERC1155SupplyUpgradeable
+     * TAKEN FROM ERC1155SupplyUpgradeable
      * @dev Indicates whether any token exist with a given id, or not.
      */
     function exists(uint256 id) external view returns (bool);
@@ -32,4 +32,13 @@ interface ISugarcaneBadge is IManagerUtil {
     // // // // // // // // // // // // // // // // // // // //
     // CORE FUNCTIONS
     // // // // // // // // // // // // // // // // // // // //
+
+    /**
+     * @dev Mints a badge id to user
+     */
+    function mint(
+        address to,
+        uint256 id,
+        uint256 amount
+    ) external;
 }

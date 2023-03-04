@@ -4,6 +4,7 @@ pragma solidity ^0.8.2;
 // Libraries
 import {IAxelarGasService} from "@axelar-network/axelar-gmp-sdk-solidity/contracts/interfaces/IAxelarGasService.sol";
 import {IAxelarGateway} from "@axelar-network/axelar-gmp-sdk-solidity/contracts/interfaces/IAxelarGateway.sol";
+import "@openzeppelin/contracts-upgradeable/utils/math/SafeCastUpgradeable.sol";
 
 // Local imports
 import "../libs/SugarcaneLib.sol";
@@ -18,6 +19,7 @@ abstract contract SugarcaneManagerBase is SugarcaneCore, ISugarcaneManagerBase {
     // // // // // // // // // // // // // // // // // // // //
     // LIBRARIES AND STRUCTS
     // // // // // // // // // // // // // // // // // // // //
+    using SafeCastUpgradeable for uint256;
 
     // // // // // // // // // // // // // // // // // // // //
     // VARIABLES - REMEMBER TO UPDATE __gap
@@ -248,7 +250,7 @@ abstract contract SugarcaneManagerBase is SugarcaneCore, ISugarcaneManagerBase {
 
         emit GasServiceUpdated(
             _msgSender(),
-            _chainId,
+            _chainId(),
             oldGasService,
             gasService_
         );
@@ -275,7 +277,7 @@ abstract contract SugarcaneManagerBase is SugarcaneCore, ISugarcaneManagerBase {
         address oldGateway = __gateway;
         __gateway = gateway_;
 
-        emit GatewayUpdated(_msgSender(), _chainId, oldGateway, gateway_);
+        emit GatewayUpdated(_msgSender(), _chainId(), oldGateway, gateway_);
     }
 
     /**
@@ -301,7 +303,7 @@ abstract contract SugarcaneManagerBase is SugarcaneCore, ISugarcaneManagerBase {
 
         emit SugarcaneFactoryUpdated(
             _msgSender(),
-            _chainId,
+            _chainId(),
             oldSugarcaneFactory,
             sugarcaneFactory_
         );
@@ -337,7 +339,7 @@ abstract contract SugarcaneManagerBase is SugarcaneCore, ISugarcaneManagerBase {
             storage currentSignerAccount = _addressOnboardMap[signerAddress_];
 
         currentSignerAccount.onboardedBlock = block.number;
-        currentSignerAccount.timestamp = block.timestamp;
+        currentSignerAccount.timestamp = block.timestamp.toUint64();
         currentSignerAccount.isOnboarded = true;
         currentSignerAccount.onboardingIndex = _onboardedAddresses.length;
 
@@ -345,7 +347,7 @@ abstract contract SugarcaneManagerBase is SugarcaneCore, ISugarcaneManagerBase {
         _onboardedAddresses.push(signerAddress_);
 
         address holdingsAddress = ISugarcaneFactory(__sugarcaneFactory)
-            .createHoldingsAccount(__chainId, signerAddress_);
+            .createHoldingsAccount(_chainId(), signerAddress_);
 
         // Update the reference of the signer address to the holdings address
         currentSignerAccount.holdings = holdingsAddress;
@@ -359,7 +361,7 @@ abstract contract SugarcaneManagerBase is SugarcaneCore, ISugarcaneManagerBase {
 
         emit AccountOnboarded(
             _msgSender(),
-            _chainId,
+            _chainId(),
             signerAddress_,
             holdingsAddress
         );
@@ -386,7 +388,12 @@ abstract contract SugarcaneManagerBase is SugarcaneCore, ISugarcaneManagerBase {
         address oldOnboarder = __onboarder;
         __onboarder = onboarder_;
 
-        emit OnboarderUpdated(_msgSender(), _chainId, oldOnboarder, onboarder_);
+        emit OnboarderUpdated(
+            _msgSender(),
+            _chainId(),
+            oldOnboarder,
+            onboarder_
+        );
     }
 
     // // // // // // // // // // // // // // // // // // // //
