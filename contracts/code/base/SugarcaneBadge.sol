@@ -7,10 +7,10 @@ import "@openzeppelin/contracts-upgradeable/token/ERC1155/extensions/ERC1155Supp
 import "@openzeppelin/contracts-upgradeable/utils/StringsUpgradeable.sol";
 
 // Local imports
-import "../utils/SugarcaneCore.sol";
+import "../utils/ManagerUtil.sol";
 
 contract SugarcaneBadge is
-    SugarcaneCore,
+    ManagerUtil,
     ERC1155Upgradeable,
     ERC1155SupplyUpgradeable
 {
@@ -28,28 +28,16 @@ contract SugarcaneBadge is
     uint256 public constant STAKER = 1;
     uint256 public constant LENDER = 2;
 
-    address internal _managerAddress;
-
-    /**
-     * @notice Throws if message sender called by any account other than the manager.
-     */
-    modifier onlySugarcaneManager() {
-        require(_msgSender() == _managerAddress, "Sender is not manager.");
-        _;
-    }
-
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
         _disableInitializers();
     }
 
     function initialize(address managerAddress_) public initializer {
-        __SugarcaneCore_init();
+        __ManagerUtil_init(managerAddress_);
 
         __ERC1155_init("");
         __ERC1155Supply_init();
-
-        _managerAddress = managerAddress_;
     }
 
     function supportsInterface(bytes4 interfaceId)
@@ -81,17 +69,6 @@ contract SugarcaneBadge is
                     ".json"
                 )
             );
-    }
-
-    function managerAddress() public view returns (address) {
-        return _managerAddress;
-    }
-
-    function setManagerAddress(address managerAddress_)
-        public
-        onlySugarcaneAdmin
-    {
-        _managerAddress = managerAddress_;
     }
 
     // The following functions are overrides required by Solidity.

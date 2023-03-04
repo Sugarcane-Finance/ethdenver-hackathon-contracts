@@ -5,11 +5,11 @@ pragma solidity ^0.8.2;
 import "../libs/SugarcaneLib.sol";
 
 // Interface imports
-import "../utils/SugarcaneCore.sol";
 import "../../interfaces/core/ISugarcaneHoldings.sol";
+import "../utils/ManagerUtil.sol";
 
 // The smart contract wallet that the signer controls on various chains
-contract SugarcaneHoldings is SugarcaneCore, ISugarcaneHoldings {
+contract SugarcaneHoldings is ManagerUtil, ISugarcaneHoldings {
     // // // // // // // // // // // // // // // // // // // //
     // LIBRARIES AND STRUCTS
     // // // // // // // // // // // // // // // // // // // //
@@ -30,11 +30,12 @@ contract SugarcaneHoldings is SugarcaneCore, ISugarcaneHoldings {
     /**
      * @notice Initializes the contract.
      */
-    function initialize(uint256 signerChainId_, address signerAddress_)
-        public
-        initializer
-    {
-        __SugarcaneCore_init();
+    function initialize(
+        address managerAddress_,
+        uint256 signerChainId_,
+        address signerAddress_
+    ) public initializer {
+        __ManagerUtil_init(managerAddress_);
 
         _signerChainId = signerChainId_;
         _signer = signerAddress_;

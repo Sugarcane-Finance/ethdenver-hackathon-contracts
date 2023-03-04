@@ -6,10 +6,10 @@ import "../libs/SugarcaneLib.sol";
 
 // Interface imports
 import "../../interfaces/core/ISugarcaneOnboardExecuteReceiverBase.sol";
-import "../utils/SugarcaneCore.sol";
+import "../utils/ManagerUtil.sol";
 
 abstract contract SugarcaneOnboardExecuteReceiverBase is
-    SugarcaneCore,
+    ManagerUtil,
     ISugarcaneOnboardExecuteReceiverBase
 {
     // // // // // // // // // // // // // // // // // // // //
@@ -19,7 +19,6 @@ abstract contract SugarcaneOnboardExecuteReceiverBase is
     // // // // // // // // // // // // // // // // // // // //
     // VARIABLES - REMEMBER TO UPDATE __gap
     // // // // // // // // // // // // // // // // // // // //
-    address internal _managerAddress;
 
     // // // // // // // // // // // // // // // // // // // //
     // CONSTRUCTOR
@@ -29,9 +28,7 @@ abstract contract SugarcaneOnboardExecuteReceiverBase is
         internal
         initializer
     {
-        __SugarcaneCore_init();
-
-        _managerAddress = managerAddress_;
+        __ManagerUtil_init(managerAddress_);
     }
 
     // // // // // // // // // // // // // // // // // // // //
@@ -41,23 +38,15 @@ abstract contract SugarcaneOnboardExecuteReceiverBase is
     // // // // // // // // // // // // // // // // // // // //
     // GETTERS
     // // // // // // // // // // // // // // // // // // // //
-    /*
-    [READ] – getManager() returns address
-    Returns the manager address
-    */
 
     // // // // // // // // // // // // // // // // // // // //
     // CORE FUNCTIONS
     // // // // // // // // // // // // // // // // // // // //
-    /*
-    [WRITE] – setManager(address managerAddress_)
-    Updates the manager contract location
-    */
 
     // // // // // // // // // // // // // // // // // // // //
     // GAP
     // // // // // // // // // // // // // // // // // // // //
 
     // Gap for more space
-    uint256[49] private __gap;
+    uint256[50] private __gap;
 }

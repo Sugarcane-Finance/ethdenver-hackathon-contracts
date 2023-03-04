@@ -3,10 +3,10 @@ pragma solidity ^0.8.2;
 
 // Connected parts of the system
 import "../../code/libs/SugarcaneLib.sol";
-import "../utils/ISugarcaneCore.sol";
+import "../utils/IManagerUtil.sol";
 
 // The smart contract wallet that the signer controls on various chains
-interface ISugarcaneHoldings is ISugarcaneCore {
+interface ISugarcaneHoldings is IManagerUtil {
     // // // // // // // // // // // // // // // // // // // //
     // EVENTS
     // // // // // // // // // // // // // // // // // // // //

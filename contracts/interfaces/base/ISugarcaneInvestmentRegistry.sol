@@ -3,10 +3,10 @@ pragma solidity ^0.8.2;
 
 // Connected parts of the system
 import "../../code/libs/SugarcaneLib.sol";
-import "../utils/ISugarcaneCore.sol";
+import "../utils/IManagerUtil.sol";
 
 // The registry of what investments a given signer has
-interface ISugarcaneInvestmentRegistry is ISugarcaneCore {
+interface ISugarcaneInvestmentRegistry is IManagerUtil {
     // // // // // // // // // // // // // // // // // // // //
     // EVENTS
     // // // // // // // // // // // // // // // // // // // //
@@ -23,18 +23,6 @@ interface ISugarcaneInvestmentRegistry is ISugarcaneCore {
         address indexed signerAddress,
         uint256 indexed investmentId,
         uint256 investmentIndex
-    );
-
-    /**
-     * @notice Emitted when the manager is address is updated
-     * @param sugarcaneAdmin The admin that made the update
-     * @param oldManagerAddress The old manager address
-     * @param newManagerAddress The new manager address
-     */
-    event ManagerUpdated(
-        address indexed sugarcaneAdmin,
-        address indexed oldManagerAddress,
-        address indexed newManagerAddress
     );
 
     // // // // // // // // // // // // // // // // // // // //
@@ -68,12 +56,6 @@ interface ISugarcaneInvestmentRegistry is ISugarcaneCore {
         view
         returns (uint256);
 
-    /**
-     * @notice Get the address of the manager
-     * @return returns the address of the manager
-     */
-    function manager() external view returns (address);
-
     // // // // // // // // // // // // // // // // // // // //
     // CORE FUNCTIONS
     // // // // // // // // // // // // // // // // // // // //
@@ -87,9 +69,4 @@ interface ISugarcaneInvestmentRegistry is ISugarcaneCore {
         uint256 protocolId_,
         uint256 initialAmountUsd_
     ) external;
-
-    /**
-     * @notice Updates the manager contract location
-     */
-    function setManager(address managerAddress_) external;
 }

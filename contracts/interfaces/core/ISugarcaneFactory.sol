@@ -2,10 +2,10 @@
 pragma solidity ^0.8.2;
 
 // Connected parts of the system
-import "../utils/ISugarcaneCore.sol";
+import "../utils/IManagerUtil.sol";
 
 // The contract that produces more holdings contracts
-interface ISugarcaneFactory is ISugarcaneCore {
+interface ISugarcaneFactory is IManagerUtil {
     // // // // // // // // // // // // // // // // // // // //
     // EVENTS
     // // // // // // // // // // // // // // // // // // // //
@@ -24,27 +24,9 @@ interface ISugarcaneFactory is ISugarcaneCore {
         address indexed signerAddress
     );
 
-    /**
-     * @notice Emitted when the manager is address is updated
-     * @param sugarcaneAdmin The admin that made the update
-     * @param oldManagerAddress The old manager address
-     * @param newManagerAddress The new manager address
-     */
-    event ManagerUpdated(
-        address indexed sugarcaneAdmin,
-        address indexed oldManagerAddress,
-        address indexed newManagerAddress
-    );
-
     // // // // // // // // // // // // // // // // // // // //
     // GETTERS
     // // // // // // // // // // // // // // // // // // // //
-
-    /**
-     * @notice Get the address of the manager
-     * @return returns the address of the manager
-     */
-    function manager() external view returns (address);
 
     // // // // // // // // // // // // // // // // // // // //
     // CORE FUNCTIONS
@@ -57,9 +39,4 @@ interface ISugarcaneFactory is ISugarcaneCore {
         uint256 signerChainId_,
         address signerAddress_
     ) external returns (address);
-
-    /**
-     * @notice Updates the manager contract location
-     */
-    function setManager(address managerAddress_) external;
 }

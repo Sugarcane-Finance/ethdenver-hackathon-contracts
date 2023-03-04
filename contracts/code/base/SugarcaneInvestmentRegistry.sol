@@ -6,11 +6,11 @@ import "../libs/SugarcaneLib.sol";
 
 // Interface imports
 import "../../interfaces/base/ISugarcaneInvestmentRegistry.sol";
-import "../utils/SugarcaneCore.sol";
+import "../utils/ManagerUtil.sol";
 
 // The registry of what investments a given signer has
 contract SugarcaneInvestmentRegistry is
-    SugarcaneCore,
+    ManagerUtil,
     ISugarcaneInvestmentRegistry
 {
     // // // // // // // // // // // // // // // // // // // //
@@ -20,8 +20,6 @@ contract SugarcaneInvestmentRegistry is
     // // // // // // // // // // // // // // // // // // // //
     // VARIABLES - REMEMBER TO UPDATE __gap
     // // // // // // // // // // // // // // // // // // // //
-
-    address internal _manager;
 
     mapping(address => uint256[]) internal _addressToInvestmentIds;
     mapping(uint256 => SugarcaneLib.Investment) internal _investmentIdToDetails;
@@ -35,8 +33,8 @@ contract SugarcaneInvestmentRegistry is
     /**
      * @notice Initializes the contract.
      */
-    function initialize() public initializer {
-        __SugarcaneCore_init();
+    function initialize(address managerAddress_) public initializer {
+        __ManagerUtil_init(managerAddress_);
 
         __SugarcaneInvestmentRegistry_init_unchained();
     }
@@ -49,14 +47,6 @@ contract SugarcaneInvestmentRegistry is
     // // // // // // // // // // // // // // // // // // // //
     // MODIFIERS
     // // // // // // // // // // // // // // // // // // // //
-
-    /**
-     * @notice Throws if message sender called by any account other than the manager contract.
-     */
-    modifier onlyManager() {
-        require(_manager == _msgSender(), "InvestmentRegistry: not manager");
-        _;
-    }
 
     // // // // // // // // // // // // // // // // // // // //
     // GETTERS
@@ -145,20 +135,6 @@ contract SugarcaneInvestmentRegistry is
             );
     }
 
-    /**
-     * @notice Get the address of the manager
-     * @return returns the address of the manager
-     */
-    function manager()
-        external
-        view
-        override
-        whenNotPausedExceptAdmin
-        returns (address)
-    {
-        return _manager;
-    }
-
     // // // // // // // // // // // // // // // // // // // //
     // CORE FUNCTIONS
     // // // // // // // // // // // // // // // // // // // //
@@ -171,7 +147,7 @@ contract SugarcaneInvestmentRegistry is
         uint256 chainId_,
         uint256 protocolId_,
         uint256 initialAmountUsd_
-    ) external override whenNotPausedExceptAdmin onlyManager {
+    ) external override whenNotPausedExceptAdmin onlySugarcaneManager {
         _addInvestment(
             signerAddress_,
             chainId_,
@@ -220,32 +196,10 @@ contract SugarcaneInvestmentRegistry is
         );
     }
 
-    /**
-     * @notice Updates the manager contract location
-     */
-    function setManager(address managerAddress_)
-        external
-        override
-        whenNotPausedExceptAdmin
-        onlySugarcaneAdmin
-    {
-        _setManager(managerAddress_);
-    }
-
-    /**
-     * @notice Updates the manager contract location
-     */
-    function _setManager(address managerAddress_) internal {
-        address oldManagerAddress = _manager;
-        _manager = managerAddress_;
-
-        emit ManagerUpdated(_msgSender(), oldManagerAddress, managerAddress_);
-    }
-
     // // // // // // // // // // // // // // // // // // // //
     // GAP
     // // // // // // // // // // // // // // // // // // // //
 
     // Gap for more space
-    uint256[47] private __gap;
+    uint256[48] private __gap;
 }

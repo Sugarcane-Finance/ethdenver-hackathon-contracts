@@ -5,11 +5,11 @@ pragma solidity ^0.8.2;
 
 // Interface imports
 import "../../interfaces/core/ISugarcaneFactory.sol";
-import "../utils/SugarcaneCore.sol";
+import "../utils/ManagerUtil.sol";
 import "./SugarcaneHoldings.sol";
 
 // The smart contract wallet that the signer controls on various chains
-contract SugarcaneFactory is SugarcaneCore, ISugarcaneFactory {
+contract SugarcaneFactory is ManagerUtil, ISugarcaneFactory {
     // // // // // // // // // // // // // // // // // // // //
     // LIBRARIES AND STRUCTS
     // // // // // // // // // // // // // // // // // // // //
@@ -17,8 +17,6 @@ contract SugarcaneFactory is SugarcaneCore, ISugarcaneFactory {
     // // // // // // // // // // // // // // // // // // // //
     // VARIABLES - REMEMBER TO UPDATE __gap
     // // // // // // // // // // // // // // // // // // // //
-
-    address internal _manager;
 
     // // // // // // // // // // // // // // // // // // // //
     // CONSTRUCTOR
@@ -29,8 +27,8 @@ contract SugarcaneFactory is SugarcaneCore, ISugarcaneFactory {
     /**
      * @notice Initializes the contract.
      */
-    function initialize() public initializer {
-        __SugarcaneCore_init();
+    function initialize(address managerAddress_) public initializer {
+        __ManagerUtil_init(managerAddress_);
 
         __SugarcaneFactory_init_unchained();
     }
@@ -41,31 +39,9 @@ contract SugarcaneFactory is SugarcaneCore, ISugarcaneFactory {
     // MODIFIERS
     // // // // // // // // // // // // // // // // // // // //
 
-    /**
-     * @notice Throws if message sender called by any account other than the manager contract.
-     */
-    modifier onlyManager() {
-        require(_manager == _msgSender(), "Factory: not manager");
-        _;
-    }
-
     // // // // // // // // // // // // // // // // // // // //
     // GETTERS
     // // // // // // // // // // // // // // // // // // // //
-
-    /**
-     * @notice Get the address of the manager
-     * @return returns the address of the manager
-     */
-    function manager()
-        external
-        view
-        override
-        whenNotPausedExceptAdmin
-        returns (address)
-    {
-        return _manager;
-    }
 
     // // // // // // // // // // // // // // // // // // // //
     // CORE FUNCTIONS
@@ -76,10 +52,20 @@ contract SugarcaneFactory is SugarcaneCore, ISugarcaneFactory {
     function createHoldingsAccount(
         uint256 signerChainId_,
         address signerAddress_
-    ) external override whenNotPausedExceptAdmin onlyManager returns (address) {
+    )
+        external
+        override
+        whenNotPausedExceptAdmin
+        onlySugarcaneManager
+        returns (address)
+    {
         // Deploy a new sugarcane holdings for the signer
         SugarcaneHoldings sugarcaneHoldings = new SugarcaneHoldings();
-        sugarcaneHoldings.initialize(signerChainId_, signerAddress_);
+        sugarcaneHoldings.initialize(
+            _manager(),
+            signerChainId_,
+            signerAddress_
+        );
 
         emit HoldingsAccountCreated(
             _msgSender(),
@@ -92,32 +78,10 @@ contract SugarcaneFactory is SugarcaneCore, ISugarcaneFactory {
         return address(sugarcaneHoldings);
     }
 
-    /**
-     * @notice Updates the manager contract location
-     */
-    function setManager(address managerAddress_)
-        external
-        override
-        whenNotPausedExceptAdmin
-        onlySugarcaneAdmin
-    {
-        _setManager(managerAddress_);
-    }
-
-    /**
-     * @notice Updates the manager contract location
-     */
-    function _setManager(address managerAddress_) internal {
-        address oldManagerAddress = _manager;
-        _manager = managerAddress_;
-
-        emit ManagerUpdated(_msgSender(), oldManagerAddress, managerAddress_);
-    }
-
     // // // // // // // // // // // // // // // // // // // //
     // GAP
     // // // // // // // // // // // // // // // // // // // //
 
     // Gap for more space
-    uint256[49] private __gap;
+    uint256[50] private __gap;
 }
