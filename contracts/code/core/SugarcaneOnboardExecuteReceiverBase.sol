@@ -38,6 +38,17 @@ abstract contract SugarcaneOnboardExecuteReceiverBase is
     // // // // // // // // // // // // // // // // // // // //
     // GETTERS
     // // // // // // // // // // // // // // // // // // // //
+    /*
+    [READ] – _execute(
+        string calldata sourceChain,
+        string calldata sourceAddress,
+        bytes calldata payload
+    )
+    Talks to the Sugarcane manager that is on this chain to run 
+
+    [READ] – getManager() returns address
+    Returns the manager address
+    */
 
     // // // // // // // // // // // // // // // // // // // //
     // CORE FUNCTIONS

@@ -9,6 +9,7 @@ import {IAxelarGateway} from "@axelar-network/axelar-gmp-sdk-solidity/contracts/
 import "../libs/SugarcaneLib.sol";
 
 // Interface imports
+import "../../interfaces/core/ISugarcaneFactory.sol";
 import "../../interfaces/core/ISugarcaneManagerBase.sol";
 import "../utils/SugarcaneCore.sol";
 
@@ -23,19 +24,20 @@ abstract contract SugarcaneManagerBase is SugarcaneCore, ISugarcaneManagerBase {
     // // // // // // // // // // // // // // // // // // // //
 
     uint256 private __chainId;
+    address private __onboarder;
     address private __sugarcaneFactory;
 
     // Axelar specific variables
     address private __gateway;
     address private __gasService;
 
-    // Map the holdings to the signer
-    mapping(address => SugarcaneLib.HoldingsToSigner)
-        internal _holdingsToSignerMap;
-
     // Map the signer to the holdings
     mapping(address => SugarcaneLib.OnboardAccountDetail)
         internal _addressOnboardMap;
+
+    // Map the holdings account to the signer
+    mapping(address => SugarcaneLib.HoldingsToSigner)
+        internal _holdingsToSignerMap;
 
     // List of all onboarded addresses
     address[] internal _onboardedAddresses;
@@ -44,13 +46,13 @@ abstract contract SugarcaneManagerBase is SugarcaneCore, ISugarcaneManagerBase {
     // CONSTRUCTOR
     // // // // // // // // // // // // // // // // // // // //
     function __SugarcaneManagerBase_init(
-        uint256 _chainId,
+        uint256 chainId_,
         address gateway_,
         address gasService_
     ) internal initializer {
         __SugarcaneCore_init();
 
-        _chainId = chainId_;
+        __chainId = chainId_;
         __gateway = gateway_;
         __gasService = gasService_;
     }
@@ -58,6 +60,14 @@ abstract contract SugarcaneManagerBase is SugarcaneCore, ISugarcaneManagerBase {
     // // // // // // // // // // // // // // // // // // // //
     // MODIFIERS
     // // // // // // // // // // // // // // // // // // // //
+
+    /**
+     * @notice Throws if message sender is not the onboarder.
+     */
+    modifier onlyOnboarder() {
+        require(__onboarder == _msgSender(), "ManagerBase: not onboarder");
+        _;
+    }
 
     // // // // // // // // // // // // // // // // // // // //
     // AXELAR SPECIFIC FUNCTIONS
@@ -168,13 +178,48 @@ abstract contract SugarcaneManagerBase is SugarcaneCore, ISugarcaneManagerBase {
         return __sugarcaneFactory;
     }
 
-    /*
-    [READ] – hasOnboarded(address userAddress_) returns bool
-    Tells if the user has onboarded
+    /**
+     * @notice Returns the address that can onboard signers (on Base this is the Base relayer, on Goerli it is the defender address, and on the other chains it is their Sugarcane_Onboard_Executor)
+     */
+    function onboarder()
+        external
+        view
+        override
+        whenNotPausedExceptAdmin
+        returns (address)
+    {
+        return _onboarder();
+    }
 
-    [READ] – onboarder() returns address
-    Returns the address that can make it onboard users (on Base this is the Base relayer, on Goerli it is the defender address, and on the other chains it is their Sugarcane_Onboard_Executor)
-    */
+    /**
+     * @notice Returns the address that can onboard signers (on Base this is the Base relayer, on Goerli it is the defender address, and on the other chains it is their Sugarcane_Onboard_Executor)
+     */
+    function _onboarder() internal view returns (address) {
+        return __onboarder;
+    }
+
+    /**
+     * @notice Tells if the signer has onboarded
+     */
+    function hasOnboarded(address signerAddress_)
+        external
+        view
+        override
+        returns (bool)
+    {
+        return _hasOnboarded(signerAddress_);
+    }
+
+    /**
+     * @notice Tells if the signer has onboarded
+     */
+    function _hasOnboarded(address signerAddress_)
+        internal
+        view
+        returns (bool)
+    {
+        return _addressOnboardMap[signerAddress_].isOnboarded;
+    }
 
     // // // // // // // // // // // // // // // // // // // //
     // CORE FUNCTIONS
@@ -197,7 +242,7 @@ abstract contract SugarcaneManagerBase is SugarcaneCore, ISugarcaneManagerBase {
      * @notice Sets the address of the bridge gas service
      * @param gasService_ the address of the bridge gas service
      */
-    function _setGasService(address gasService_) internal returns (address) {
+    function _setGasService(address gasService_) internal {
         address oldGasService = __gasService;
         __gasService = gasService_;
 
@@ -226,7 +271,7 @@ abstract contract SugarcaneManagerBase is SugarcaneCore, ISugarcaneManagerBase {
      * @notice Sets the address of the bridge gateway
      * @param gateway_ the address of the bridge gateway
      */
-    function _setGateway(address gateway_) internal returns (address) {
+    function _setGateway(address gateway_) internal {
         address oldGateway = __gateway;
         __gateway = gateway_;
 
@@ -250,10 +295,7 @@ abstract contract SugarcaneManagerBase is SugarcaneCore, ISugarcaneManagerBase {
      * @notice Sets the address of the Sugarcane Factory
      * @param sugarcaneFactory_ the address of the Sugarcane Factory
      */
-    function _setSugarcaneFactory(address sugarcaneFactory_)
-        internal
-        returns (address)
-    {
+    function _setSugarcaneFactory(address sugarcaneFactory_) internal {
         address oldSugarcaneFactory = __sugarcaneFactory;
         __sugarcaneFactory = sugarcaneFactory_;
 
@@ -267,32 +309,32 @@ abstract contract SugarcaneManagerBase is SugarcaneCore, ISugarcaneManagerBase {
 
     /**
      * @notice Called to onboard an account
-     * @param signerAddress the address of the account to onboard
+     * @param signerAddress_ the address of the account to onboard
      */
-    function onboardAccount(address signerAddress)
+    function onboardAccount(address signerAddress_)
         external
         override
         nonReentrant
         whenNotPausedExceptAdmin
-        onlySugarcaneAdmin
+        onlyOnboarder
     {
-        _onboardAccount(signerAddress);
+        _onboardAccount(signerAddress_);
     }
 
     /**
      * @notice Called to onboard an account
-     * @param signerAddress the address of the account to onboard
+     * @param signerAddress_ the address of the account to onboard
      */
-    function _onboardAccount(address signerAddress) internal returns (address) {
+    function _onboardAccount(address signerAddress_) internal {
         // Only onboard accounts who have not onboarded
         require(
-            !_addressOnboardMap[signerAddress].isOnboarded,
+            !_addressOnboardMap[signerAddress_].isOnboarded,
             "ManagerBase: Account onboarded"
         );
 
         // Add the investment details
         SugarcaneLib.OnboardAccountDetail
-            storage currentSignerAccount = _addressOnboardMap[signerAddress];
+            storage currentSignerAccount = _addressOnboardMap[signerAddress_];
 
         currentSignerAccount.onboardedBlock = block.number;
         currentSignerAccount.timestamp = block.timestamp;
@@ -300,10 +342,10 @@ abstract contract SugarcaneManagerBase is SugarcaneCore, ISugarcaneManagerBase {
         currentSignerAccount.onboardingIndex = _onboardedAddresses.length;
 
         // Add the address to the list of onboarded addresses
-        _onboardedAddresses.push(signerAddress);
+        _onboardedAddresses.push(signerAddress_);
 
         address holdingsAddress = ISugarcaneFactory(__sugarcaneFactory)
-            .createHoldingsAccount(__chainId, signerAddress);
+            .createHoldingsAccount(__chainId, signerAddress_);
 
         // Update the reference of the signer address to the holdings address
         currentSignerAccount.holdings = holdingsAddress;
@@ -312,26 +354,45 @@ abstract contract SugarcaneManagerBase is SugarcaneCore, ISugarcaneManagerBase {
         SugarcaneLib.HoldingsToSigner
             storage reverseMapping = _holdingsToSignerMap[holdingsAddress];
 
-        reverseMapping.signer = signerAddress;
+        reverseMapping.signer = signerAddress_;
         reverseMapping.isOnboarded = true;
 
         emit AccountOnboarded(
             _msgSender(),
             _chainId,
-            signerAddress,
+            signerAddress_,
             holdingsAddress
         );
     }
 
-    /*
-    [WRITE] – setOnboarder(address onboarderAddress_)
-    Updates the valid onboarding address contract 
-    */
+    /**
+     * @notice Updates the valid onboarding address contract
+     * @param onboarder_ the address of the onboarder
+     */
+    function setOnboarder(address onboarder_)
+        external
+        override
+        whenNotPausedExceptAdmin
+        onlySugarcaneAdmin
+    {
+        _setOnboarder(onboarder_);
+    }
+
+    /**
+     * @notice Updates the valid onboarding address contract
+     * @param onboarder_ the address of the onboarder
+     */
+    function _setOnboarder(address onboarder_) internal {
+        address oldOnboarder = __onboarder;
+        __onboarder = onboarder_;
+
+        emit OnboarderUpdated(_msgSender(), _chainId, oldOnboarder, onboarder_);
+    }
 
     // // // // // // // // // // // // // // // // // // // //
     // GAP
     // // // // // // // // // // // // // // // // // // // //
 
     // Gap for more space
-    uint256[43] private __gap;
+    uint256[42] private __gap;
 }

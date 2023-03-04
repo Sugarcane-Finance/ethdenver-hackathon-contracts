@@ -31,7 +31,6 @@ interface ISugarcaneFactory is IManagerUtil {
     // // // // // // // // // // // // // // // // // // // //
     // CORE FUNCTIONS
     // // // // // // // // // // // // // // // // // // // //
-
     /**
      * @notice Only the manager can talk to this function Sends back the address of the created holdings
      */

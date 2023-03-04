@@ -37,9 +37,18 @@ interface ISugarcaneInvestmentRegistry is IManagerUtil {
 
     /**
      * @notice Gets all the investments that have been added for this address
-     * @return returns full list of the investment ids
+     * @return returns full list of the investments
      */
     function investments(address signerAddress_)
+        external
+        view
+        returns (uint256[] memory);
+
+    /**
+     * @notice Gets all the investments for a specific protocol that have been added for this address
+     * @return returns full list of the investments for a specific protocol
+     */
+    function investmentsForProtocol(address signerAddress_, uint256 protocolId_)
         external
         view
         returns (uint256[] memory);

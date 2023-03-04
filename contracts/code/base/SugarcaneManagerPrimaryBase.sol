@@ -9,8 +9,10 @@ import "../libs/StringOperations.sol";
 import "../libs/SugarcaneLib.sol";
 
 // Interface imports
+import "../../interfaces/base/ISugarcaneBadge.sol";
+import "../../interfaces/base/ISugarcaneInvestmentRegistry.sol";
+import "../../interfaces/base/ISugarcaneManagerPrimaryBase.sol";
 import "../core/SugarcaneManagerBase.sol";
-import "../../interfaces/core/ISugarcaneManagerPrimaryBase.sol";
 
 //  The manager on the canonical chain
 contract SugarcaneManagerPrimaryBase is
@@ -115,10 +117,11 @@ contract SugarcaneManagerPrimaryBase is
 
         // Mint the badges
         // Get the number of investments for this signer
-        uint256[] overallInvestmentListing = _investmentRegistry()
+        uint256[] memory overallInvestmentListing = _investmentRegistry()
             .investmentsForProtocol(signerAddress_, protocolId_);
-        uint256[] protocolSpecificInvestmentListing = _investmentRegistry()
-            .investments(signerAddress_, protocolId_);
+        uint256[]
+            memory protocolSpecificInvestmentListing = _investmentRegistry()
+                .investments(signerAddress_, protocolId_);
 
         // Check badges for overall usage
         if (overallInvestmentListing.length == 1) {
@@ -160,7 +163,7 @@ contract SugarcaneManagerPrimaryBase is
         override
         onlySugarcaneAdmin
     {
-        return _setInvestmentRegistry(investmentRegistry_);
+        _setInvestmentRegistry(investmentRegistry_);
     }
 
     /**
@@ -187,7 +190,7 @@ contract SugarcaneManagerPrimaryBase is
         override
         onlySugarcaneAdmin
     {
-        return _setSugarcaneBadge(sugarcaneBadge_);
+        _setSugarcaneBadge(sugarcaneBadge_);
     }
 
     /**
@@ -210,5 +213,5 @@ contract SugarcaneManagerPrimaryBase is
     // // // // // // // // // // // // // // // // // // // //
 
     // Gap for more space
-    uint256[49] private __gap;
+    uint256[48] private __gap;
 }

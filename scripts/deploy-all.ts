@@ -20,6 +20,7 @@ async function main() {
   };
   const baseContracts: IBaseContracts = await setUpBase(deployer, baseBridge);
 
+  /*
   // Set up Goerli
   const goerliBridge: IBridgeAddresses = {
     gatewayAddress: addr1.address,
@@ -39,6 +40,7 @@ async function main() {
     deployer,
     mumbaiBridge
   );
+  */
 }
 
 // We recommend this pattern to be able to use async/await everywhere

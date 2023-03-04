@@ -30,6 +30,7 @@ interface ISugarcaneHoldings is IManagerUtil {
     // CORE FUNCTIONS
     // // // // // // // // // // // // // // // // // // // //
     /*
+
     [WRITE] – bridgeUsd(uint256 destinationChain_, address signerAddress_, uint256 amount_)
     Sends the tokens to the destination chain
 
@@ -40,6 +41,6 @@ interface ISugarcaneHoldings is IManagerUtil {
     Sets the signer address and the chain id of the signer
 
     [WRITE] – transfer(address tokenAddress_, address toAddress_, uint256 amount_)
-    Moves the amount of tokens from the holdings to the to address
+    Moves the amount of tokens from the holdings to the signer address
     */
 }
