@@ -11,7 +11,7 @@ interface ISugarcaneFactory is IManagerUtil {
     // // // // // // // // // // // // // // // // // // // //
 
     /**
-     * @notice Emitted when the manager is address is updated
+     * @notice Emitted when the holdings account is created
      * @param manager The admin that made the update
      * @param sugarcaneHoldings The address of the holdings contract
      * @param signerChainId The chain this was deployed on

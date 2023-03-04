@@ -37,11 +37,12 @@ contract SugarcaneManagerPrimary is
     /**
      * @notice Initializes the contract.
      */
-    function initialize(address gateway_, address gasService_)
-        public
-        initializer
-    {
-        __SugarcaneManagerBase_init(gateway_, gasService_);
+    function initialize(
+        uint256 chainId_,
+        address gateway_,
+        address gasService_
+    ) public initializer {
+        __SugarcaneManagerBase_init(chainId_, gateway_, gasService_);
 
         __SugarcaneManagerPrimary_init_unchained();
     }

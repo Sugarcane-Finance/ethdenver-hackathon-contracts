@@ -8,21 +8,23 @@ import {
   ISetUpFunction,
 } from "../utils";
 
-export interface IBaseContracts extends IContractSet {
+export interface IGoerliContracts extends IContractSet {
   // sugarcaneManager: Contract;
-  // sugarcaneInvestmentRegistry: Contract;
-  // sugarcaneBadge: Contract;
+  // sugarcaneFactory: Contract;
+  // sugarcaneOnboardExecuteReceiverSecondary: Contract;
 }
 
-export const setUp: ISetUpFunction<IBaseContracts> = async (
+export const setUp: ISetUpFunction<IGoerliContracts> = async (
   deployer: SignerWithAddress,
   bridge: IBridgeAddresses
 ) => {
-  // --- Deploy Sugarcane_Factory()
   // --- Deploy Sugarcane_Manager_Primary(goerliGateway_, goerliGasService_)
+  // --- Deploy Sugarcane_Factory()
   // --- > Sugarcane_Factory.setManager(goerliManagerAddress_)
+
   // --- > Sugarcane_Manager_Primary.setFactory(factoryAddress_)
   // --- > Sugarcane_Manager_Primary.setOnboarder(defenderAddress_)
+
   // --- Deploy Sugarcane_Onboard_Execute_Receiver_Primary(goerliManagerAddress_)
   return {};
 };

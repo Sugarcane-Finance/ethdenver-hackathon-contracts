@@ -16,18 +16,6 @@ export type ISetUpFunction<IContractSet> = (
   bridge: IBridgeAddresses
 ) => Promise<IContractSet>;
 
-// // // // // // // // // // // // // // // // // // // //
-// MUMBAI SETUP
-// // // // // // // // // // // // // // // // // // // //
-export const setUpMumbai = async () => {
-  // --- Deploy Sugarcane_Factory()
-  // --- Deploy Sugarcane_Manager_Secondary(mumbaiGateway_, mumbaiGasService_, chainId_)
-  // --- > Sugarcane_Factory.setManager(mumbaiManagerAddress_)
-  // --- > Sugarcane_Manager_Secondary.setFactory(mumbaiFactoryAddress_)
-  // --- Deploy Sugarcane_Onboard_Execute_Receiver_Secondary
-  // --- > Sugarcane_Manager_Secondary.setOnboarder(onboardExecuteReceive_)
-};
-
 export const deploySugarcaneContract = async (
   deployer: SignerWithAddress,
   contractName: string,

@@ -10,6 +10,7 @@ import {
 
 export interface IBaseContracts extends IContractSet {
   sugarcaneManager: Contract;
+  sugarcaneFactory: Contract;
   sugarcaneInvestmentRegistry: Contract;
   sugarcaneBadge: Contract;
 }
@@ -18,21 +19,28 @@ export const setUp: ISetUpFunction<IBaseContracts> = async (
   deployer: SignerWithAddress,
   bridge: IBridgeAddresses
 ) => {
-  // --- Deploy SugarcaneManagerPrimary()
+  // Deploy Sugarcane Manager Primary
   const sugarcaneManager = await deploySugarcaneContract(
     deployer,
-    "SugarcaneManagerPrimary",
+    "SugarcaneManagerPrimaryBase",
     [bridge.gatewayAddress, bridge.gasServiceAddress]
   );
 
-  // --- Deploy Sugarcane Investment Registry
+  // Deploy Sugarcane Factory Primary
+  const sugarcaneFactory = await deploySugarcaneContract(
+    deployer,
+    "SugarcaneFactory",
+    [sugarcaneManager.address]
+  );
+
+  // Deploy Sugarcane Investment Registry
   const sugarcaneInvestmentRegistry = await deploySugarcaneContract(
     deployer,
     "SugarcaneInvestmentRegistry",
     [sugarcaneManager.address]
   );
 
-  // --- Deploy Sugarcane Badges
+  // Deploy Sugarcane Badges
   const sugarcaneBadge = await deploySugarcaneContract(
     deployer,
     "SugarcaneBadge",
@@ -41,6 +49,7 @@ export const setUp: ISetUpFunction<IBaseContracts> = async (
 
   return {
     sugarcaneManager,
+    sugarcaneFactory,
     sugarcaneInvestmentRegistry,
     sugarcaneBadge,
   };

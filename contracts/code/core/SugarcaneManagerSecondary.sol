@@ -27,7 +27,6 @@ contract SugarcaneManagerSecondary is
     // // // // // // // // // // // // // // // // // // // //
     // VARIABLES - REMEMBER TO UPDATE __gap
     // // // // // // // // // // // // // // // // // // // //
-    uint256 internal _chainId;
 
     // // // // // // // // // // // // // // // // // // // //
     // CONSTRUCTOR
@@ -39,12 +38,11 @@ contract SugarcaneManagerSecondary is
      * @notice Initializes the contract.
      */
     function initialize(
+        uint256 chainId_,
         address gateway_,
-        address gasService_,
-        uint256 chainId_
+        address gasService_
     ) public initializer {
-        __SugarcaneManagerBase_init(gateway_, gasService_);
-        _chainId = chainId_;
+        __SugarcaneManagerBase_init(chainId_, gateway_, gasService_);
 
         __SugarcaneManagerSecondary_init_unchained();
     }
@@ -77,5 +75,5 @@ contract SugarcaneManagerSecondary is
     // // // // // // // // // // // // // // // // // // // //
 
     // Gap for more space
-    uint256[49] private __gap;
+    uint256[50] private __gap;
 }

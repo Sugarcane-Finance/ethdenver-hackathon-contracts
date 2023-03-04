@@ -10,6 +10,35 @@ interface ISugarcaneManagerBase is ISugarcaneCore {
     // // // // // // // // // // // // // // // // // // // //
     // EVENTS
     // // // // // // // // // // // // // // // // // // // //
+
+    /**
+     * @notice Emitted when the gas service address is updated
+     * @param admin The admin that made the update
+     * @param chainId The chain id of the chain this is deployed on
+     * @param oldGasService The old gas service address
+     * @param newGasService The new gas service address
+     */
+    event GasServiceUpdated(
+        address indexed admin,
+        uint256 chainId,
+        address indexed oldGasService,
+        address indexed newGasService
+    );
+
+    /**
+     * @notice Emitted when the gateway address is updated
+     * @param admin The admin that made the update
+     * @param chainId The chain id of the chain this is deployed on
+     * @param oldGateway The old gateway address
+     * @param newGateway The new gateway address
+     */
+    event GatewayUpdated(
+        address indexed admin,
+        uint256 chainId,
+        address indexed oldGateway,
+        address indexed newGateway
+    );
+
     // // // // // // // // // // // // // // // // // // // //
     // GETTERS
     // // // // // // // // // // // // // // // // // // // //
