@@ -23,15 +23,6 @@ contract SugarcaneBadge is
     // // // // // // // // // // // // // // // // // // // //
     // VARIABLES - REMEMBER TO UPDATE __gap
     // // // // // // // // // // // // // // // // // // // //
-
-    uint256 public constant LIQUIDITY_PROVIDER = 0;
-    uint256 public constant STAKER = 1;
-    uint256 public constant LENDER = 2;
-    uint256 public constant FRIEND_REFER = 3;
-    uint256 public constant INVEST_ONE = 4;
-    uint256 public constant INVEST_FIVE = 5;
-    uint256 public constant INVEST_TEN = 6;
-
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
         _disableInitializers();

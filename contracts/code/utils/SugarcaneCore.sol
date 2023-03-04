@@ -44,8 +44,32 @@ abstract contract SugarcaneCore is
     // // // // // // // // // // // // // // // // // // // //
     // VARIABLES - REMEMBER TO UPDATE __gap
     // // // // // // // // // // // // // // // // // // // //
+    // Roles
     bytes32 public constant SUGARCANE_ADMIN_ROLE =
         keccak256("SUGARCANE_ADMIN_ROLE");
+
+    // Badge Ids
+    uint256 public constant BADGE_ID_LIQUIDITY_PROVIDER =
+        uint256(keccak256("badge.LIQUIDITY_PROVIDER"));
+    uint256 public constant BADGE_ID_STAKER =
+        uint256(keccak256("badge.STAKER"));
+    uint256 public constant BADGE_ID_LENDER =
+        uint256(keccak256("badge.LENDER"));
+    uint256 public constant BADGE_ID_FRIEND_REFER =
+        uint256(keccak256("badge.FRIEND_REFER"));
+    uint256 public constant BADGE_ID_INVEST_ONE =
+        uint256(keccak256("badge.INVEST_ONE"));
+    uint256 public constant BADGE_ID_INVEST_FIVE =
+        uint256(keccak256("badge.INVEST_FIVE"));
+    uint256 public constant BADGE_ID_INVEST_TEN =
+        uint256(keccak256("badge.INVEST_TEN"));
+
+    // Protocol Ids
+    uint256 public constant PROTOCOL_ID_AAVE = uint256(keccak256("badge.AAVE"));
+    uint256 public constant PROTOCOL_ID_UNISWAP =
+        uint256(keccak256("badge.UNISWAP"));
+    uint256 public constant PROTOCOL_ID_SSV_LIQUID_STAKING =
+        uint256(keccak256("badge.SSV_LIQUID_STAKING"));
 
     // // // // // // // // // // // // // // // // // // // //
     // CONSTRUCTOR
@@ -105,9 +129,11 @@ abstract contract SugarcaneCore is
      * @notice The function that supports new implementation contracts
      * @param newImplementation The new implementation contract
      */
-    function _authorizeUpgrade(
-        address newImplementation
-    ) internal override onlySugarcaneAdmin {}
+    function _authorizeUpgrade(address newImplementation)
+        internal
+        override
+        onlySugarcaneAdmin
+    {}
 
     /**
      * @notice Pauses the Sugarcane contract

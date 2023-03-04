@@ -26,7 +26,7 @@ export const setUp: ISetUpFunction<IBaseContracts> = async (
     [bridge.gatewayAddress, bridge.gasServiceAddress]
   );
 
-  // Deploy Sugarcane Factory Primary
+  // Deploy Sugarcane Factory
   const sugarcaneFactory = await deploySugarcaneContract(
     deployer,
     "SugarcaneFactory",
@@ -46,6 +46,27 @@ export const setUp: ISetUpFunction<IBaseContracts> = async (
     "SugarcaneBadge",
     [sugarcaneManager.address]
   );
+
+  // // // // // // // // // //
+  // Update the sugarcane manager
+
+  // Set the Sugarcane factory
+  await sugarcaneManager.setSugarcaneFactory(sugarcaneFactory.address);
+  console.log(
+    `--- Manager.SugarcaneFactory updated - ${sugarcaneFactory.address}`
+  );
+
+  // Set the Sugarcane Investment Registry
+  await sugarcaneManager.setInvestmentRegistry(
+    sugarcaneInvestmentRegistry.address
+  );
+  console.log(
+    `--- Manager.InvestmentRegistry updated - ${sugarcaneInvestmentRegistry.address}`
+  );
+
+  // Set the Sugarcane Badge
+  await sugarcaneManager.setSugarcaneBadge(sugarcaneBadge.address);
+  console.log(`--- Manager.SugarcaneBadge updated - ${sugarcaneBadge.address}`);
 
   return {
     sugarcaneManager,
