@@ -39,6 +39,20 @@ interface ISugarcaneManagerBase is ISugarcaneCore {
         address indexed newGateway
     );
 
+    /**
+     * @notice Emitted when the Sugarcane Factory is updated
+     * @param admin The admin that made the update
+     * @param chainId The chain id of the chain this is deployed on
+     * @param oldSugarcane The old Sugarcane Factory
+     * @param newSugarcane The new Sugarcane Factory
+     */
+    event SugarcaneFactoryUpdated(
+        address indexed admin,
+        uint256 chainId,
+        address indexed oldSugarcane,
+        address indexed newSugarcane
+    );
+
     // // // // // // // // // // // // // // // // // // // //
     // GETTERS
     // // // // // // // // // // // // // // // // // // // //

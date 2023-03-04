@@ -14,6 +14,19 @@ library SugarcaneLib {
         address chainAddress;
     }
 
+    struct OnboardAccountDetail {
+        uint256 onboardingIndex;
+        uint256 onboardedBlock;
+        uint64 timestamp;
+        address holdings;
+        bool isOnboarded;
+    }
+
+    struct HoldingsToSigner {
+        address signer;
+        bool isOnboarded;
+    }
+
     struct Investment {
         uint256 chainId;
         uint256 protocolId;

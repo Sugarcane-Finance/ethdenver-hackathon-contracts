@@ -76,13 +76,21 @@ contract SugarcaneManagerPrimaryBase is
         uint256 chainId_,
         uint256 protocolId_,
         uint256 initialAmountUsd_
-    ) external onlySugarcaneAdmin {
-        ISugarcaneInvestmentRegistry().addInvestment(
+    ) external nonReentrant onlySugarcaneAdmin {
+        ISugarcaneInvestmentRegistry(__investmentRegistry).addInvestment(
             signerAddress_,
             chainId_,
             protocolId_,
             initialAmountUsd_
         );
+
+        // If this is the first lending investment mint the first lending badge
+        // If this is the first staking investment mint the first staking badge
+        // If this is the first liquidity providing investment mint the first liquidity providing badge
+
+        // If this is the first investment mint the first badge
+        // If this is the fifth investment mint the fifth badge
+        // If this is the tenth investment mint the tenth badge
     }
 
     /**

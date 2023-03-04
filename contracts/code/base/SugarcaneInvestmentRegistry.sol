@@ -22,6 +22,7 @@ contract SugarcaneInvestmentRegistry is
     // // // // // // // // // // // // // // // // // // // //
 
     mapping(address => uint256[]) internal _addressToInvestmentIds;
+    mapping(uint256 => uint256[]) internal _specificProtocolInvestmentMap;
     mapping(uint256 => SugarcaneLib.Investment) internal _investmentIdToDetails;
 
     // // // // // // // // // // // // // // // // // // // //
@@ -47,6 +48,23 @@ contract SugarcaneInvestmentRegistry is
     // // // // // // // // // // // // // // // // // // // //
     // MODIFIERS
     // // // // // // // // // // // // // // // // // // // //
+
+    // // // // // // // // // // // // // // // // // // // //
+    // UTILS
+    // // // // // // // // // // // // // // // // // // // //
+
+    /**
+     * @notice Combines the address and the number to create a unique id
+     * @return returns the hash of the two put together
+     */
+    function _addressAndNumberHash(address address_, uint256 enteredNumber_)
+        internal
+        pure
+        returns (uint256)
+    {
+        return
+            uint256(keccak256(abi.encodePacked(address_, "-", enteredNumber_)));
+    }
 
     // // // // // // // // // // // // // // // // // // // //
     // GETTERS
@@ -76,6 +94,34 @@ contract SugarcaneInvestmentRegistry is
         returns (uint256[] memory)
     {
         return _addressToInvestmentIds[signerAddress_];
+    }
+
+    /**
+     * @notice Gets all the investments for a specific protocol that have been added for this address
+     * @return returns full list of the investments for a specific protocol
+     */
+    function investmentsForProtocol(address signerAddress_, uint256 protocolId_)
+        external
+        view
+        override
+        whenNotPausedExceptAdmin
+        returns (uint256[] memory)
+    {
+        return _investmentsForProtocol(signerAddress_, protocolId_);
+    }
+
+    /**
+     * @notice Gets all the investments for a specific protocol that have been added for this address
+     * @return returns full list of the investments for a specific protocol
+     */
+    function _investmentsForProtocol(
+        address signerAddress_,
+        uint256 protocolId_
+    ) internal view returns (uint256[] memory) {
+        return
+            _specificProtocolInvestmentMap[
+                _addressAndNumberHash(signerAddress_, protocolId_)
+            ];
     }
 
     /**
@@ -115,24 +161,7 @@ contract SugarcaneInvestmentRegistry is
         whenNotPausedExceptAdmin
         returns (uint256)
     {
-        return _investmentIdHash(signerAddress_, investmentIndex_);
-    }
-
-    /**
-     * @notice Combines the signer address and the investment index to create a unique id
-     * @return returns the investment id
-     */
-    function _investmentIdHash(address signerAddress_, uint256 investmentIndex)
-        internal
-        pure
-        returns (uint256)
-    {
-        return
-            uint256(
-                keccak256(
-                    abi.encodePacked(signerAddress_, "-", investmentIndex)
-                )
-            );
+        return _addressAndNumberHash(signerAddress_, investmentIndex_);
     }
 
     // // // // // // // // // // // // // // // // // // // //
@@ -169,7 +198,7 @@ contract SugarcaneInvestmentRegistry is
             .length;
 
         // Create the investment id
-        uint256 investmentId = _investmentIdHash(
+        uint256 investmentId = _addressAndNumberHash(
             signerAddress_,
             investmentIndex
         );
@@ -188,11 +217,25 @@ contract SugarcaneInvestmentRegistry is
         currentInvestment.initialAmountUsd = initialAmountUsd_;
         currentInvestment.isActive = true;
 
+        // Track specific protocol investment records
+        uint256 addressWithProtocolId = _addressAndNumberHash(
+            signerAddress_,
+            protocolId_
+        );
+        uint256[]
+            storage currentProtocolSpecificInvestmentListing = _specificProtocolInvestmentMap[
+                addressWithProtocolId
+            ];
+        currentProtocolSpecificInvestmentListing.push(investmentId);
+
         emit InvestmentAdded(
             _msgSender(),
             signerAddress_,
+            chainId_,
+            protocolId_,
             investmentId,
-            investmentIndex
+            investmentIndex,
+            currentProtocolSpecificInvestmentListing.length
         );
     }
 
@@ -201,5 +244,5 @@ contract SugarcaneInvestmentRegistry is
     // // // // // // // // // // // // // // // // // // // //
 
     // Gap for more space
-    uint256[48] private __gap;
+    uint256[47] private __gap;
 }

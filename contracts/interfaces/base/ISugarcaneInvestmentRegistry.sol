@@ -15,14 +15,20 @@ interface ISugarcaneInvestmentRegistry is IManagerUtil {
      * @notice Emitted when there is an investment added
      * @param manager The manager address that made the update
      * @param signerAddress The signer address
+     * @param chainId The id of the investment
+     * @param protocolId The id of the investment
      * @param investmentId The id of the investment
-     * @param investmentIndex The index of the investment for this signer
+     * @param overallInvestmentIndex The index of the investment for this signer
+     * @param protocolSpecificInvestmentIndex The protocol specific index of the investment for this signer
      */
     event InvestmentAdded(
-        address indexed manager,
+        address manager,
         address indexed signerAddress,
-        uint256 indexed investmentId,
-        uint256 investmentIndex
+        uint256 indexed chainId,
+        uint256 indexed protocolId,
+        uint256 investmentId,
+        uint256 overallInvestmentIndex,
+        uint256 protocolSpecificInvestmentIndex
     );
 
     // // // // // // // // // // // // // // // // // // // //
