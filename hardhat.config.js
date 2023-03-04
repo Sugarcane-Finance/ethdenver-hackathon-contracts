@@ -63,6 +63,13 @@ const config = {
       // gasMultiplier: 0.5,
       url: "http://0.0.0.0:8545",
     },
+    baseGoerli: {
+      url: `https://base-goerli.infura.io/v3/${process.env.INFURA_API_KEY}`,
+      accounts:
+        process.env.BASE_GOERLI_RELAYER_PRIVATE_KEY !== undefined
+          ? [process.env.BASE_GOERLI_RELAYER_PRIVATE_KEY]
+          : [],
+    },
   },
   defaultNetwork: "hardhat",
   gasReporter: {

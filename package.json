@@ -12,7 +12,8 @@
     "test": "hh test --network hardhat",
     "run-local-node": "hh node --hostname 0.0.0.0",
     "console-local": "npx hardhat console --network localhost",
-    "exec-deploy-test": "npx hardhat run scripts/_deployTest.ts --network localhost",
+    "exec-deploy-local": "npx hardhat run scripts/_deployTest.ts --network localhost",
+    "exec-deploy-base-goerli": "npx hardhat run scripts/_deployTest.ts --network baseGoerli",
     "exec-playground": "npx hardhat run scripts/_playground.ts --network localhost"
   },
   "husky": {

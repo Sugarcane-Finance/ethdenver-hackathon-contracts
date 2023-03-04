@@ -1,6 +1,6 @@
 import * as dotenv from "dotenv";
 
-import { HardhatUserConfig, task } from "hardhat/config";
+import { task } from "hardhat/config";
 
 import "@nomiclabs/hardhat-etherscan";
 import "@nomiclabs/hardhat-waffle";
@@ -21,7 +21,7 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
   }
 });
 
-const config: HardhatUserConfig = {
+const config = {
   solidity: {
     version: "0.8.4",
     settings: {
@@ -62,6 +62,13 @@ const config: HardhatUserConfig = {
       // gasPrice: 8e8,
       // gasMultiplier: 0.5,
       url: "http://0.0.0.0:8545",
+    },
+    baseGoerli: {
+      url: `https://base-goerli.infura.io/v3/${process.env.INFURA_API_KEY}`,
+      accounts:
+        process.env.BASE_GOERLI_RELAYER_PRIVATE_KEY !== undefined
+          ? [process.env.BASE_GOERLI_RELAYER_PRIVATE_KEY]
+          : [],
     },
   },
   defaultNetwork: "hardhat",

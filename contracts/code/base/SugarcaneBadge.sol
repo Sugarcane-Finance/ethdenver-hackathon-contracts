@@ -30,6 +30,14 @@ contract SugarcaneBadge is
 
     address internal _managerAddress;
 
+    /**
+     * @notice Throws if message sender called by any account other than the manager.
+     */
+    modifier onlySugarcaneManager() {
+        require(_msgSender() == _managerAddress, "Sender is not manager.");
+        _;
+    }
+
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
         _disableInitializers();
@@ -44,7 +52,9 @@ contract SugarcaneBadge is
         _managerAddress = managerAddress_;
     }
 
-    function supportsInterface(bytes4 interfaceId)
+    function supportsInterface(
+        bytes4 interfaceId
+    )
         public
         view
         virtual
@@ -58,13 +68,9 @@ contract SugarcaneBadge is
         _setURI(newuri);
     }
 
-    function uri(uint256 badgeId)
-        public
-        view
-        virtual
-        override
-        returns (string memory)
-    {
+    function uri(
+        uint256 badgeId
+    ) public view virtual override returns (string memory) {
         return
             string(
                 abi.encodePacked(
@@ -77,6 +83,12 @@ contract SugarcaneBadge is
 
     function managerAddress() public view returns (address) {
         return _managerAddress;
+    }
+
+    function setManagerAddress(
+        address managerAddress_
+    ) public onlySugarcaneAdmin {
+        _managerAddress = managerAddress_;
     }
 
     // The following functions are overrides required by Solidity.
@@ -102,5 +114,12 @@ contract SugarcaneBadge is
     //   revert();
     // }
 
-    // function mint() public
+    function mint(
+        address to,
+        uint256 id,
+        uint256 amount
+    ) public onlySugarcaneManager {
+        require(balanceOf(to, id) == 0, "User already has badge.");
+        _mint(to, id, amount, "");
+    }
 }

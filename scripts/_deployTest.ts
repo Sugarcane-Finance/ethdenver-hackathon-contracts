@@ -11,17 +11,17 @@ async function main() {
   [deployer, addr1, addr2, ...addrs] = await ethers.getSigners();
 
   // Set up the factory contract
-  const SugarcaneFactory: ContractFactory = await ethers.getContractFactory(
-    "SugarcaneFactory"
+  const SugarcaneBadge: ContractFactory = await ethers.getContractFactory(
+    "SugarcaneBadge"
   );
-  const sugarcaneFactory: Contract = await upgrades.deployProxy(
-    SugarcaneFactory,
-    [],
+  const sugarcaneBadge: Contract = await upgrades.deployProxy(
+    SugarcaneBadge,
+    [process.env.BASE_GOERLI_RELAYER_ADDRESS],
     {
       kind: "uups",
     }
   );
-  console.log("\n[DEPLOYED] SugarcaneFactory - ", sugarcaneFactory.address);
+  console.log("\n[DEPLOYED] SugarcaneBadge - ", sugarcaneBadge.address);
 
   /*
   // Test  connecting to an existing contract insted of redeploying
@@ -34,8 +34,8 @@ async function main() {
   );
   */
   // decide to unpause the sugarcaneFactory contract
-  await sugarcaneFactory.connect(deployer).unpause();
-  console.log("--- SugarcaneFactory: unpaused");
+  await sugarcaneBadge.connect(deployer).unpause();
+  console.log("--- SugarcaneBadge: unpaused");
 }
 
 // We recommend this pattern to be able to use async/await everywhere

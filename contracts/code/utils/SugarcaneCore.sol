@@ -105,11 +105,9 @@ abstract contract SugarcaneCore is
      * @notice The function that supports new implementation contracts
      * @param newImplementation The new implementation contract
      */
-    function _authorizeUpgrade(address newImplementation)
-        internal
-        override
-        onlySugarcaneAdmin
-    {}
+    function _authorizeUpgrade(
+        address newImplementation
+    ) internal override onlySugarcaneAdmin {}
 
     /**
      * @notice Pauses the Sugarcane contract
