@@ -11,6 +11,12 @@ export interface IBridgeAddresses {
   gasServiceAddress: string;
 }
 
+export const chainIds = {
+  baseGoerli: 84531,
+  goerli: 5,
+  mumbai: 80001,
+};
+
 export type ISetUpFunction<IContractSet> = (
   deployer: SignerWithAddress,
   bridge: IBridgeAddresses
@@ -31,10 +37,7 @@ export const deploySugarcaneContract = async (
       kind: "uups",
     }
   );
-  console.log(
-    `\n[DEPLOYED] ${SugarcaneContractFactory} - `,
-    sugarcaneContract.address
-  );
+  console.log(`\n[DEPLOYED] ${contractName} - `, sugarcaneContract.address);
 
   await unpauseContract(deployer, contractName, sugarcaneContract.address);
 

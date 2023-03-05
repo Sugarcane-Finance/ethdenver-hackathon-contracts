@@ -2,6 +2,7 @@ import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { Contract } from "ethers";
 
 import {
+  chainIds,
   deploySugarcaneContract,
   IBridgeAddresses,
   IContractSet,
@@ -23,7 +24,7 @@ export const setUp: ISetUpFunction<IBaseContracts> = async (
   const sugarcaneManager = await deploySugarcaneContract(
     deployer,
     "SugarcaneManagerPrimaryBase",
-    [bridge.gatewayAddress, bridge.gasServiceAddress]
+    [chainIds.baseGoerli]
   );
 
   // Deploy Sugarcane Factory
