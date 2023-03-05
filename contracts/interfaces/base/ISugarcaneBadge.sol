@@ -13,6 +13,19 @@ interface ISugarcaneBadge is IERC1155Upgradeable, IManagerUtil {
     // // // // // // // // // // // // // // // // // // // //
     // EVENTS
     // // // // // // // // // // // // // // // // // // // //
+
+    /**
+     * @notice Emitted when the uri prefix has been changed
+     * @param admin The admin that made the update
+     * @param oldUriPrefix The old uri prefix
+     * @param newUriPrefix The new uri prefix
+     */
+    event UriPrefixUpdated(
+        address indexed admin,
+        string oldUriPrefix,
+        string newUriPrefix
+    );
+
     // // // // // // // // // // // // // // // // // // // //
     // GETTERS
     // // // // // // // // // // // // // // // // // // // //

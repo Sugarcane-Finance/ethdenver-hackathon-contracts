@@ -45,7 +45,10 @@ export const setUp: ISetUpFunction<IBaseContracts> = async (
   const sugarcaneBadge = await deploySugarcaneContract(
     deployer,
     "SugarcaneBadge",
-    [sugarcaneManager.address]
+    [
+      sugarcaneManager.address,
+      "https://sugarcane.infura-ipfs.io/ipfs/QmbvNwPYkLygycqJpuEJAEEkezRKbX9yzHWkSDciJtPWUc/metadata/",
+    ]
   );
 
   // // // // // // // // // //

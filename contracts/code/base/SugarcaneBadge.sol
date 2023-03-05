@@ -18,18 +18,36 @@ contract SugarcaneBadge is
     // LIBRARIES AND STRUCTS
     // // // // // // // // // // // // // // // // // // // //
 
+    /**
+     * @notice Emitted when the uri prefix has been changed
+     * @param admin The admin that made the update
+     * @param oldUriPrefix The old uri prefix
+     * @param newUriPrefix The new uri prefix
+     */
+    event UriPrefixUpdated(
+        address indexed admin,
+        string oldUriPrefix,
+        string newUriPrefix
+    );
+
     using StringsUpgradeable for uint256;
 
     // // // // // // // // // // // // // // // // // // // //
     // VARIABLES - REMEMBER TO UPDATE __gap
     // // // // // // // // // // // // // // // // // // // //
+    string private _uriPrefix;
+
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
         _disableInitializers();
     }
 
-    function initialize(address managerAddress_) public initializer {
+    function initialize(address managerAddress_, string memory uriPrefix_)
+        public
+        initializer
+    {
         __ManagerUtil_init(managerAddress_);
+        _uriPrefix = uriPrefix_;
 
         __ERC1155_init("");
         __ERC1155Supply_init();
@@ -46,7 +64,10 @@ contract SugarcaneBadge is
     }
 
     function setURI(string memory newuri) public onlySugarcaneAdmin {
-        _setURI(newuri);
+        string memory oldURI = _uriPrefix;
+        _uriPrefix = newuri;
+
+        emit UriPrefixUpdated(_msgSender(), oldURI, newuri);
     }
 
     function uri(uint256 badgeId)
@@ -57,13 +78,7 @@ contract SugarcaneBadge is
         returns (string memory)
     {
         return
-            string(
-                abi.encodePacked(
-                    "https://sugarcane.infura-ipfs.io/ipfs/QmdPqKhoYKbrqDx1jCEjPpHdi86nHdfcJS6ZJfKZQcbTJa/metadata/",
-                    badgeId.toString(),
-                    ".json"
-                )
-            );
+            string(abi.encodePacked(_uriPrefix, badgeId.toString(), ".json"));
     }
 
     // The following functions are overrides required by Solidity.

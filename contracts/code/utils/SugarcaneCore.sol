@@ -65,11 +65,12 @@ abstract contract SugarcaneCore is
         uint256(keccak256("badge.INVEST_TEN"));
 
     // Protocol Ids
-    uint256 public constant PROTOCOL_ID_AAVE = uint256(keccak256("badge.AAVE"));
+    uint256 public constant PROTOCOL_ID_AAVE =
+        uint256(keccak256("protocol.AAVE"));
     uint256 public constant PROTOCOL_ID_UNISWAP =
-        uint256(keccak256("badge.UNISWAP"));
+        uint256(keccak256("protocol.UNISWAP"));
     uint256 public constant PROTOCOL_ID_SSV_LIQUID_STAKING =
-        uint256(keccak256("badge.SSV_LIQUID_STAKING"));
+        uint256(keccak256("protocol.SSV_LIQUID_STAKING"));
 
     // // // // // // // // // // // // // // // // // // // //
     // CONSTRUCTOR
