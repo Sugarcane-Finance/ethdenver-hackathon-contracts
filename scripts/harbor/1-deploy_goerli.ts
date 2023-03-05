@@ -3,6 +3,7 @@ import { ethers } from "hardhat";
 
 import { IGoerliContracts, setUp as setUpGoerli } from "../setup/goerli.setup";
 import { badgeIds, IBridgeAddresses, protocolIds } from "../utils";
+import { goerliBridge } from "./_addresses";
 
 async function main() {
   let deployer: SignerWithAddress;
@@ -18,15 +19,11 @@ async function main() {
   console.log(protocolIds);
 
   // Set up Goerli
-  const goerliBridge: IBridgeAddresses = {
-    gatewayAddress: "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
-    gasServiceAddress: "0x0165878A594ca255338adfa4d48449f69242Eb8F",
-  };
   const goerliContracts: IGoerliContracts = await setUpGoerli(
     // deployer: SignerWithAddress,
     deployer,
     // onboarder: string,
-    deployer.address,
+    addr2.address,
     // bridge: IBridgeAddresses
     goerliBridge
   );

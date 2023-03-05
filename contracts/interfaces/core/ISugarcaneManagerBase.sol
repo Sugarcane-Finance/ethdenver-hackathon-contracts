@@ -138,6 +138,14 @@ interface ISugarcaneManagerBase is ISugarcaneCore {
      */
     function hasOnboarded(address signerAddress_) external view returns (bool);
 
+    /**
+     * @notice Gets all the onboard details of this signer on this chain
+     */
+    function onboardDetails(address signerAddress_)
+        external
+        view
+        returns (SugarcaneLib.OnboardAccountDetail memory);
+
     // // // // // // // // // // // // // // // // // // // //
     // CORE FUNCTIONS
     // // // // // // // // // // // // // // // // // // // //

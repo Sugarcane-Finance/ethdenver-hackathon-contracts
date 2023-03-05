@@ -3,6 +3,10 @@ import { ethers } from "hardhat";
 
 import { connectToSecondary } from "../setup/goerli.setup";
 import { chainIds } from "../utils";
+import {
+  goerliManagerAddress,
+  mumbaiExecuteOnboardAddress,
+} from "./_addresses";
 
 async function main() {
   let deployer: SignerWithAddress;
@@ -10,9 +14,6 @@ async function main() {
   let addr2: SignerWithAddress;
   let addrs: SignerWithAddress[];
   [deployer, addr1, addr2, ...addrs] = await ethers.getSigners();
-
-  const goerliManagerAddress = "0x000000";
-  const mumbaiExecuteOnboardAddress = "0x000000";
 
   // Set up mumbai connected to
   await connectToSecondary(

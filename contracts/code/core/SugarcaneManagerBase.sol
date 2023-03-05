@@ -245,6 +245,29 @@ abstract contract SugarcaneManagerBase is SugarcaneCore, ISugarcaneManagerBase {
         return _addressOnboardMap[signerAddress_].isOnboarded;
     }
 
+    /**
+     * @notice Gets all the onboard details of this signer on this chain
+     */
+    function onboardDetails(address signerAddress_)
+        external
+        view
+        override
+        returns (SugarcaneLib.OnboardAccountDetail memory)
+    {
+        return _onboardDetails(signerAddress_);
+    }
+
+    /**
+     * @notice Gets all the onboard details of this signer on this chain
+     */
+    function _onboardDetails(address signerAddress_)
+        internal
+        view
+        returns (SugarcaneLib.OnboardAccountDetail memory)
+    {
+        return _addressOnboardMap[signerAddress_];
+    }
+
     // // // // // // // // // // // // // // // // // // // //
     // CORE FUNCTIONS
     // // // // // // // // // // // // // // // // // // // //

@@ -75,13 +75,13 @@ abstract contract SugarcaneCore is
     // Chain Ids
     uint256 public constant CHAIN_ID_ARBITRUM_GOERLI = 421613;
     uint256 public constant CHAIN_ID_BASE_GOERLI = 84531;
-    uint256 public constant CHAIN_ID_GOERLI = 5;
-    uint256 public constant CHAIN_ID_MUMBAI = 80001;
+    uint256 public constant CHAIN_ID_GOERLI = 1; // 5;
+    uint256 public constant CHAIN_ID_MUMBAI = 137; // 80001;
 
     // Chain Names
     string public constant CHAIN_NAME_ARBITRUM_GOERLI = "arbitrum";
     string public constant CHAIN_NAME_BASE_GOERLI = "...";
-    string public constant CHAIN_NAME_GOERLI = "ethereum-2";
+    string public constant CHAIN_NAME_GOERLI = "Ethereum"; // "ethereum-2";
     string public constant CHAIN_NAME_MUMBAI = "Polygon";
 
     // // // // // // // // // // // // // // // // // // // //

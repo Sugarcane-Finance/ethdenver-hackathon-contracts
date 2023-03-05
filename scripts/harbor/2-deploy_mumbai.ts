@@ -3,6 +3,7 @@ import { ethers } from "hardhat";
 
 import { IMumbaiContracts, setUp as setUpMumbai } from "../setup/mumbai.setup";
 import { badgeIds, IBridgeAddresses, protocolIds } from "../utils";
+import { mumbaiBridge } from "./_addresses";
 
 async function main() {
   let deployer: SignerWithAddress;
@@ -18,15 +19,11 @@ async function main() {
   console.log(protocolIds);
 
   // Set up Mumbai
-  const mumbaiBridge: IBridgeAddresses = {
-    gatewayAddress: "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
-    gasServiceAddress: "0x0165878A594ca255338adfa4d48449f69242Eb8F",
-  };
   const mumbaiContracts: IMumbaiContracts = await setUpMumbai(
     // deployer: SignerWithAddress,
     deployer,
-    // onboarder: string,
-    addr2.address,
+    // onboarder: string, -- DOES NOT MATTER
+    "",
     // bridge: IBridgeAddresses
     mumbaiBridge
   );

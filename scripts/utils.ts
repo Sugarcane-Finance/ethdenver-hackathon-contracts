@@ -113,6 +113,18 @@ export const connectToSugarcaneContract = async (
   return sugarcaneContract;
 };
 
+export const connectToContractAt = async (
+  contractName: string,
+  contractAtAddr: string
+): Promise<Contract> => {
+  const contractAt: Contract = await ethers.getContractAt(
+    contractName,
+    contractAtAddr
+  );
+
+  return contractAt;
+};
+
 export const unpauseContract = async (
   deployer: SignerWithAddress,
   contractName: string,

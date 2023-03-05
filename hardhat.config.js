@@ -71,7 +71,7 @@ const config = {
           : [],
     },
     harborGoerli: {
-      url: `http://35.168.11.30:4000`,
+      url: `${process.env.HARBOR_TEST_URL}:4000`,
       accounts:
         process.env.HARBOR_TEST_PRIVATE_KEY_1 !== undefined
           ? [
@@ -82,7 +82,7 @@ const config = {
           : [],
     },
     harborMumbai: {
-      url: `http://35.168.11.30:4004`,
+      url: `${process.env.HARBOR_TEST_URL}:4004`,
       accounts:
         process.env.HARBOR_TEST_PRIVATE_KEY_1 !== undefined
           ? [
