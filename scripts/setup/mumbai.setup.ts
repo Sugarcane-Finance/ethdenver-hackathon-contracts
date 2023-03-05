@@ -2,6 +2,8 @@ import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { Contract } from "ethers";
 
 import {
+  chainIds,
+  connectToSugarcaneContract,
   deploySugarcaneContract,
   IBridgeAddresses,
   IContractSet,
@@ -9,23 +11,70 @@ import {
 } from "../utils";
 
 export interface IMumbaiContracts extends IContractSet {
-  // sugarcaneManager: Contract;
-  // sugarcaneFactory: Contract;
-  // sugarcaneOnboardExecuteReceiverSecondary: Contract;
+  sugarcaneManager: Contract;
+  sugarcaneFactory: Contract;
+  sugarcaneOnboardExecuteReceiverSecondary: Contract;
 }
 
 export const setUp: ISetUpFunction<IMumbaiContracts> = async (
   deployer: SignerWithAddress,
+  onboarder: string,
   bridge: IBridgeAddresses
 ) => {
-  // --- Deploy Sugarcane_Manager_Secondary(mumbaiGateway_, mumbaiGasService_, chainId_)
+  // Deploy Sugarcane Manager Secondary
+  const mumbaiSugarcaneManager = await deploySugarcaneContract(
+    deployer,
+    "SugarcaneManagerSecondary",
+    [chainIds.mumbai, bridge.gatewayAddress, bridge.gasServiceAddress]
+  );
 
-  // --- Deploy Sugarcane_Factory()
-  // --- > Sugarcane_Factory.setManager(mumbaiManagerAddress_)
+  // Deploy Sugarcane Factory
+  const sugarcaneFactory = await deploySugarcaneContract(
+    deployer,
+    "SugarcaneFactory",
+    [mumbaiSugarcaneManager.address]
+  );
 
-  // --- > Sugarcane_Manager_Secondary.setFactory(mumbaiFactoryAddress_)
+  // Deploy Sugarcane Onboard Execute Receiver Secondary
+  const sugarcaneOnboardExecuteReceiverSecondary =
+    await deploySugarcaneContract(
+      deployer,
+      "SugarcaneOnboardExecuteReceiverSecondary",
+      [
+        // uint256 chainId_,
+        chainIds.mumbai,
+        // address gateway_,
+        bridge.gatewayAddress,
+        // address secondaryManagerAddress_
+        mumbaiSugarcaneManager.address,
+      ]
+    );
 
-  // --- Deploy Sugarcane_Onboard_Execute_Receiver_Secondary
-  // --- > Sugarcane_Manager_Secondary.setOnboarder(onboardExecuteReceive_)
-  return {};
+  // // // // // // // // // //
+  // Update the sugarcane manager
+
+  // Set the onboarder
+  // The address that can make it onboard users (on Base this is the Base relayer, on Goerli it is the defender address, and on the other chains it is their Sugarcane_Onboard_Executor)
+  await mumbaiSugarcaneManager.setOnboarder(onboarder);
+  console.log(`\n\n\--- MumbaiManager.Onboarder updated - ${onboarder}`);
+
+  // Set the Sugarcane factory
+  await mumbaiSugarcaneManager.setSugarcaneFactory(sugarcaneFactory.address);
+  console.log(
+    `--- MumbaiManager.SugarcaneFactory updated - ${sugarcaneFactory.address}`
+  );
+
+  // Set the Sugarcane Onboard Execute Receiver Secondary
+  await mumbaiSugarcaneManager.setExecuteOnboardReceiver(
+    sugarcaneOnboardExecuteReceiverSecondary.address
+  );
+  console.log(
+    `--- MumbaiManager.SugarcaneOnboardExecuteReceiverPrimary updated - ${sugarcaneOnboardExecuteReceiverSecondary.address}`
+  );
+
+  return {
+    sugarcaneManager: mumbaiSugarcaneManager,
+    sugarcaneFactory,
+    sugarcaneOnboardExecuteReceiverSecondary,
+  };
 };

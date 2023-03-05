@@ -2,8 +2,6 @@ import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { ethers } from "hardhat";
 
 import { IBaseContracts, setUp as setUpBase } from "./setup/base.setup";
-import { IGoerliContracts, setUp as setUpGoerli } from "./setup/goerli.setup";
-import { IMumbaiContracts, setUp as setUpMumbai } from "./setup/mumbai.setup";
 import { badgeIds, IBridgeAddresses, protocolIds } from "./utils";
 
 async function main() {
