@@ -81,7 +81,7 @@ const config = {
             ]
           : [],
     },
-    harborPolygon: {
+    harborMumbai: {
       url: `http://35.168.11.30:4004`,
       accounts:
         process.env.HARBOR_TEST_PRIVATE_KEY_1 !== undefined

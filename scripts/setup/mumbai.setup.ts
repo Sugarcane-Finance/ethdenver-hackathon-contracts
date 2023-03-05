@@ -55,7 +55,9 @@ export const setUp: ISetUpFunction<IMumbaiContracts> = async (
 
   // Set the onboarder
   // The address that can make it onboard users (on Base this is the Base relayer, on Goerli it is the defender address, and on the other chains it is their Sugarcane_Onboard_Executor)
-  await mumbaiSugarcaneManager.setOnboarder(onboarder);
+  await mumbaiSugarcaneManager.setOnboarder(
+    sugarcaneOnboardExecuteReceiverSecondary.address
+  );
   console.log(`\n\n\--- MumbaiManager.Onboarder updated - ${onboarder}`);
 
   // Set the Sugarcane factory

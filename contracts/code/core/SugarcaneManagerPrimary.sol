@@ -69,7 +69,7 @@ contract SugarcaneManagerPrimary is
     modifier onlyOnboardExecuteReceiver() {
         require(
             __executeOnboardReceiver == _msgSender(),
-            "ManagerBase: not onboarder"
+            "ManagerBase: not onboard execute"
         );
         _;
     }

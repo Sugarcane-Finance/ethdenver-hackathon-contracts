@@ -26,7 +26,7 @@ async function main() {
     // deployer: SignerWithAddress,
     deployer,
     // onboarder: string,
-    addr2.address,
+    deployer.address,
     // bridge: IBridgeAddresses
     goerliBridge
   );

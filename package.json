@@ -17,7 +17,9 @@
     "exec-playground-investment_tracking": "npx hardhat run scripts/_playground-investment_tracking.ts --network localhost",
     "exec-playground-onboarding": "npx hardhat run scripts/_playground-onboarding.ts --network localhost",
     "exec-playground": "npx hardhat run scripts/_playground.ts --network localhost",
-    "exec-deploy-harbor": "npx hardhat run scripts/harbor/1-0-deploy_goerli.ts --network harborGoerli"
+    "exec-deploy-harbor-1": "npx hardhat run scripts/harbor/1-0-deploy_goerli.ts --network harborGoerli",
+    "exec-deploy-harbor-2": "npx hardhat run scripts/harbor/1-1-deploy_mumbai.ts --network harborMumbai",
+    "exec-deploy-harbor-3": "npx hardhat run scripts/harbor/_playground-onboarding.ts --network harborGoerli"
   },
   "husky": {
     "hooks": {
