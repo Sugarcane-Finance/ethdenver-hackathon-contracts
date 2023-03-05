@@ -42,7 +42,7 @@ abstract contract SugarcaneManagerBase is SugarcaneCore, ISugarcaneManagerBase {
         internal _holdingsToSignerMap;
 
     // List of all onboarded addresses
-    address[] internal _onboardedAddresses;
+    address[] private __onboardedAddresses;
 
     // // // // // // // // // // // // // // // // // // // //
     // CONSTRUCTOR
@@ -178,6 +178,28 @@ abstract contract SugarcaneManagerBase is SugarcaneCore, ISugarcaneManagerBase {
      */
     function _sugarcaneFactory() internal view returns (address) {
         return __sugarcaneFactory;
+    }
+
+    /**
+     * @notice Sends the array of onboarded addresses
+     * @return returns the array of onboarded addresses
+     */
+    function onboardedAddresses()
+        external
+        view
+        override
+        whenNotPausedExceptAdmin
+        returns (address[] memory)
+    {
+        return _onboardedAddresses();
+    }
+
+    /**
+     * @notice Sends the array of onboarded addresses
+     * @return returns the array of onboarded addresses
+     */
+    function _onboardedAddresses() internal view returns (address[] memory) {
+        return __onboardedAddresses;
     }
 
     /**
@@ -342,10 +364,10 @@ abstract contract SugarcaneManagerBase is SugarcaneCore, ISugarcaneManagerBase {
         currentSignerAccount.onboardedBlock = block.number;
         currentSignerAccount.timestamp = block.timestamp.toUint64();
         currentSignerAccount.isOnboarded = true;
-        currentSignerAccount.onboardingIndex = _onboardedAddresses.length;
+        currentSignerAccount.onboardingIndex = __onboardedAddresses.length;
 
         // Add the address to the list of onboarded addresses
-        _onboardedAddresses.push(signerAddress_);
+        __onboardedAddresses.push(signerAddress_);
 
         address holdingsAddress = ISugarcaneFactory(__sugarcaneFactory)
             .createHoldingsAccount(_chainId(), signerAddress_);

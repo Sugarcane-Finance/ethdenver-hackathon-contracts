@@ -8,7 +8,7 @@ import {
   chainIds,
   connectToSugarcaneContract,
   protocolIds,
-} from "./utils";
+} from "../utils";
 
 async function main() {
   // Addresses
@@ -24,19 +24,6 @@ async function main() {
     "SugarcaneManagerPrimaryBase",
     "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"
   );
-
-  await managerContract.onboardAccount(
-    // address signerAddress_,
-    signerAddress_
-  );
-
-  const hasOnboarded = await managerContract.hasOnboarded(signerAddress_);
-  console.log("\n\n-=-=- Has Onboarded");
-  console.log(hasOnboarded);
-
-  const onboardedAddresses = await managerContract.onboardedAddresses();
-  console.log("\n\n-=-=- Onboarded Addresses");
-  console.log(onboardedAddresses);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

@@ -60,8 +60,7 @@ contract SugarcaneFactory is ManagerUtil, ISugarcaneFactory {
         returns (address)
     {
         // Deploy a new sugarcane holdings for the signer
-        SugarcaneHoldings sugarcaneHoldings = new SugarcaneHoldings();
-        sugarcaneHoldings.initialize(
+        SugarcaneHoldings sugarcaneHoldings = new SugarcaneHoldings(
             _manager(),
             signerChainId_,
             signerAddress_

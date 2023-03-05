@@ -123,6 +123,12 @@ interface ISugarcaneManagerBase is ISugarcaneCore {
     function sugarcaneFactory() external view returns (address);
 
     /**
+     * @notice Sends the array of onboarded addresses
+     * @return returns the array of onboarded addresses
+     */
+    function onboardedAddresses() external view returns (address[] memory);
+
+    /**
      * @notice Returns the address that can onboard signers (on Base this is the Base relayer, on Goerli it is the defender address, and on the other chains it is their Sugarcane_Onboard_Executor)
      */
     function onboarder() external view returns (address);

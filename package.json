@@ -15,7 +15,9 @@
     "exec-deploy-local": "npx hardhat run scripts/1-deploy_all.ts --network localhost",
     "exec-deploy-base-goerli": "npx hardhat run scripts/1-deploy_all.ts --network baseGoerli",
     "exec-playground-investment_tracking": "npx hardhat run scripts/_playground-investment_tracking.ts --network localhost",
-    "exec-playground": "npx hardhat run scripts/_playground.ts --network localhost"
+    "exec-playground-onboarding": "npx hardhat run scripts/_playground-onboarding.ts --network localhost",
+    "exec-playground": "npx hardhat run scripts/_playground.ts --network localhost",
+    "exec-deploy-harbor": "npx hardhat run scripts/harbor/1-0-deploy_goerli.ts --network harborGoerli"
   },
   "husky": {
     "hooks": {

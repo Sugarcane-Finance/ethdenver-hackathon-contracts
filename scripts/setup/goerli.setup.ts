@@ -64,7 +64,7 @@ export const setUp: ISetUpFunction<IGoerliContracts> = async (
   );
 
   // Set the Sugarcane Onboard Execute Receiver Primary
-  await goerliSugarcaneManager.sugarcaneOnboardExecuteReceiverPrimary(
+  await goerliSugarcaneManager.setExecuteOnboardReceiver(
     sugarcaneOnboardExecuteReceiverPrimary.address
   );
   console.log(

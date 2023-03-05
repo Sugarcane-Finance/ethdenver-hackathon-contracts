@@ -25,25 +25,16 @@ contract SugarcaneHoldings is ManagerUtil, ISugarcaneHoldings {
     // CONSTRUCTOR
     // // // // // // // // // // // // // // // // // // // //
     /// @custom:oz-upgrades-unsafe-allow constructor
-    constructor() initializer {}
-
-    /**
-     * @notice Initializes the contract.
-     */
-    function initialize(
+    constructor(
         address managerAddress_,
         uint256 signerChainId_,
         address signerAddress_
-    ) public initializer {
+    ) initializer {
         __ManagerUtil_init(managerAddress_);
 
         _signerChainId = signerChainId_;
         _signer = signerAddress_;
-
-        __SugarcaneHoldings_init_unchained();
     }
-
-    function __SugarcaneHoldings_init_unchained() internal initializer {}
 
     // // // // // // // // // // // // // // // // // // // //
     // MODIFIERS

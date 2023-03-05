@@ -70,6 +70,28 @@ const config = {
           ? [process.env.BASE_GOERLI_RELAYER_PRIVATE_KEY]
           : [],
     },
+    harborGoerli: {
+      url: `http://35.168.11.30:4000`,
+      accounts:
+        process.env.HARBOR_TEST_PRIVATE_KEY_1 !== undefined
+          ? [
+              process.env.HARBOR_TEST_PRIVATE_KEY_1,
+              process.env.HARBOR_TEST_PRIVATE_KEY_2,
+              process.env.HARBOR_TEST_PRIVATE_KEY_3,
+            ]
+          : [],
+    },
+    harborPolygon: {
+      url: `http://35.168.11.30:4004`,
+      accounts:
+        process.env.HARBOR_TEST_PRIVATE_KEY_1 !== undefined
+          ? [
+              process.env.HARBOR_TEST_PRIVATE_KEY_1,
+              process.env.HARBOR_TEST_PRIVATE_KEY_2,
+              process.env.HARBOR_TEST_PRIVATE_KEY_3,
+            ]
+          : [],
+    },
   },
   defaultNetwork: "hardhat",
   gasReporter: {
