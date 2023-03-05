@@ -78,7 +78,9 @@ contract SugarcaneBadge is
         returns (string memory)
     {
         return
-            string(abi.encodePacked(_uriPrefix, badgeId.toString(), ".json"));
+            string(
+                abi.encodePacked(_uriPrefix, badgeId.toHexString(), ".json")
+            );
     }
 
     // The following functions are overrides required by Solidity.

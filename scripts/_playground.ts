@@ -4,6 +4,7 @@ import { ethers } from "hardhat";
 import {
   badgeIds,
   badgeListing,
+  BadgeNames,
   chainIds,
   connectToSugarcaneContract,
   protocolIds,
@@ -28,7 +29,6 @@ async function main() {
     "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"
   );
 
-  /*
   await managerContract.recordInvestment(
     // address signerAddress_,
     signerAddress_,
@@ -39,7 +39,6 @@ async function main() {
     // uint256 initialAmountUsd_
     250
   );
-  */
 
   // // // // // // // // // //
   // Read all the investments
@@ -93,6 +92,16 @@ async function main() {
 
   console.log("\n\n-=-=- Badges:");
   console.log(badgeBalanceMap);
+
+  // // // // // // // // // //
+  // Bage details
+  // // // // // // // // // //
+  const badgeDetails = await badgeContract.uri(
+    badgeIds[BadgeNames.FRIEND_REFER]
+  );
+
+  console.log("\n\n-=-=- Badge Details - badgeIds[BadgeNames.FRIEND_REFER] ");
+  console.log(badgeDetails);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

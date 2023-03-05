@@ -19,24 +19,37 @@ export const chainIds = {
 };
 
 // Badge Ids
-export const badgeIds: Record<string, string> = {};
 
-export const badgeListing: string[] = [
-  "FRIEND_REFER",
-  "LIQUIDITY_PROVIDER",
-  "STAKER",
-  "LENDER",
-  "INVEST_ONE",
-  "INVEST_FIVE",
-  "INVEST_TEN",
+export enum BadgeNames {
+  FRIEND_REFER = "FRIEND_REFER",
+  LIQUIDITY_PROVIDER = "LIQUIDITY_PROVIDER",
+  STAKER = "STAKER",
+  LENDER = "LENDER",
+  INVEST_ONE = "INVEST_ONE",
+  INVEST_FIVE = "INVEST_FIVE",
+  INVEST_TEN = "INVEST_TEN",
+}
+
+export const badgeListing: BadgeNames[] = [
+  BadgeNames.FRIEND_REFER,
+  BadgeNames.LIQUIDITY_PROVIDER,
+  BadgeNames.STAKER,
+  BadgeNames.LENDER,
+  BadgeNames.INVEST_ONE,
+  BadgeNames.INVEST_FIVE,
+  BadgeNames.INVEST_TEN,
 ];
 
 const constructBadgeId = (badgeId: string) =>
   keccak256(toUtf8Bytes(`badge.${badgeId}`)).toLowerCase();
 
-badgeListing.forEach((badgeId: string) => {
-  badgeIds[badgeId] = constructBadgeId(badgeId);
+let _badgeIds: Record<BadgeNames | string, string> = {};
+
+badgeListing.forEach((badgeId: BadgeNames) => {
+  _badgeIds[badgeId] = constructBadgeId(badgeId);
 });
+
+export const badgeIds = _badgeIds;
 
 export const badgeImageCIDs = {
   LIQUIDITY_PROVIDER: "QmQU19gBFVZcwEUmg3AXYPkcX6YXu3goq1KuuWSiAaGMgD",
