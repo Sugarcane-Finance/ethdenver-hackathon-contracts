@@ -13,6 +13,7 @@ export interface IBridgeAddresses {
 }
 
 export const chainIds = {
+  arbitrumGoerli: 421613,
   baseGoerli: 84531,
   goerli: 5,
   mumbai: 80001,
@@ -72,6 +73,7 @@ export const protocolIds = {
 
 export type ISetUpFunction<IContractSet> = (
   deployer: SignerWithAddress,
+  onboarder: string,
   bridge: IBridgeAddresses
 ) => Promise<IContractSet>;
 

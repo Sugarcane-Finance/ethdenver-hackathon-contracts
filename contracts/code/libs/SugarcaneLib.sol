@@ -33,4 +33,16 @@ library SugarcaneLib {
         uint256 initialAmountUsd;
         bool isActive;
     }
+
+    struct SecondaryHoldings {
+        uint256 chainId;
+        address holdingsAddress;
+        bool isSet;
+    }
+
+    struct SecondaryManager {
+        uint256 chainId;
+        address managerAddress;
+        bool isSet;
+    }
 }

@@ -63,6 +63,24 @@ contract SugarcaneManagerSecondary is
     // // // // // // // // // // // // // // // // // // // //
     // CORE FUNCTIONS
     // // // // // // // // // // // // // // // // // // // //
+
+    /**
+     * @notice Does checks for valid request and talks to Sugarcane_Factory to create Holdings address on Base
+     * @param signerAddress_ the address of the account to onboard
+     */
+    function onboardAccount(address signerAddress_)
+        external
+        override(ISugarcaneManagerBase, SugarcaneManagerBase)
+        nonReentrant
+        whenNotPausedExceptAdmin
+        onlyOnboarder
+    {
+        // Run onboard locally
+        _onboardAccount(signerAddress_);
+
+        // Send a message to the primary chain that the account has been onboarded
+    }
+
     /*
     [WRITE] – onboardUser(address userAddress_)
     Only the Sugarcane_Onboard_Execute_Receiver_Secondary contract can talk to this.

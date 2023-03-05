@@ -38,8 +38,19 @@ contract SugarcaneOnboardExecuteReceiverPrimary is
     /**
      * @notice Initializes the contract.
      */
-    function initialize(address primaryManagerAddress_) public initializer {
-        __SugarcaneOnboardExecuteReceiverBase_init(primaryManagerAddress_);
+    function initialize(
+        uint256 chainId_,
+        address gateway_,
+        address primaryManagerAddress_
+    ) public initializer {
+        __SugarcaneOnboardExecuteReceiverBase_init(
+            // uint256 chainId_,
+            chainId_,
+            // address gateway_,
+            gateway_,
+            // address managerAddress_
+            primaryManagerAddress_
+        );
 
         __SugarcaneOnboardExecuteReceiverPrimary_init_unchained();
     }
@@ -69,6 +80,12 @@ contract SugarcaneOnboardExecuteReceiverPrimary is
     Check that the sender to this de is the nonce that got communicated to
     Talks to the Sugarcane Primary Manager that is on this chain has and updates it’s record of list of addresses
     */
+
+    function _execute(
+        string calldata sourceChain,
+        string calldata sourceAddress,
+        bytes calldata payload
+    ) internal override {}
 
     // // // // // // // // // // // // // // // // // // // //
     // GAP

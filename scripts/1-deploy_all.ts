@@ -20,23 +20,36 @@ async function main() {
   console.log(protocolIds);
 
   // Set up Base
+  /* */
   const baseBridge: IBridgeAddresses = {
     gatewayAddress: addr1.address,
     gasServiceAddress: addr2.address,
   };
-  const baseContracts: IBaseContracts = await setUpBase(deployer, baseBridge);
-
+  const baseContracts: IBaseContracts = await setUpBase(
+    // deployer: SignerWithAddress,
+    deployer,
+    // onboarder: string,
+    deployer.address,
+    // bridge: IBridgeAddresses
+    baseBridge
+  );
   /*
+
   // Set up Goerli
   const goerliBridge: IBridgeAddresses = {
     gatewayAddress: addr1.address,
     gasServiceAddress: addr2.address,
   };
   const goerliContracts: IGoerliContracts = await setUpGoerli(
+    // deployer: SignerWithAddress,
     deployer,
+    // onboarder: string,
+    addr2.address,
+    // bridge: IBridgeAddresses
     goerliBridge
   );
 
+  /*
   // Set up Mumbai
   const mumbaiBridge: IBridgeAddresses = {
     gatewayAddress: addr1.address,

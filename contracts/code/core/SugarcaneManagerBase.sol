@@ -310,11 +310,12 @@ abstract contract SugarcaneManagerBase is SugarcaneCore, ISugarcaneManagerBase {
     }
 
     /**
-     * @notice Called to onboard an account
+     * @notice Does checks for valid request and talks to SugarcaneFactory to create Holdings address
      * @param signerAddress_ the address of the account to onboard
      */
     function onboardAccount(address signerAddress_)
         external
+        virtual
         override
         nonReentrant
         whenNotPausedExceptAdmin
@@ -324,7 +325,7 @@ abstract contract SugarcaneManagerBase is SugarcaneCore, ISugarcaneManagerBase {
     }
 
     /**
-     * @notice Called to onboard an account
+     * @notice Does checks for valid request and talks to SugarcaneFactory to create Holdings address
      * @param signerAddress_ the address of the account to onboard
      */
     function _onboardAccount(address signerAddress_) internal {

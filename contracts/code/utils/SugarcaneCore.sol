@@ -72,6 +72,18 @@ abstract contract SugarcaneCore is
     uint256 public constant PROTOCOL_ID_SSV_LIQUID_STAKING =
         uint256(keccak256("protocol.SSV_LIQUID_STAKING"));
 
+    // Chain Ids
+    uint256 public constant CHAIN_ID_ARBITRUM_GOERLI = 421613;
+    uint256 public constant CHAIN_ID_BASE_GOERLI = 84531;
+    uint256 public constant CHAIN_ID_GOERLI = 5;
+    uint256 public constant CHAIN_ID_MUMBAI = 80001;
+
+    // Chain Names
+    string public constant CHAIN_NAME_ARBITRUM_GOERLI = "arbitrum";
+    string public constant CHAIN_NAME_BASE_GOERLI = "...";
+    string public constant CHAIN_NAME_GOERLI = "ethereum-2";
+    string public constant CHAIN_NAME_MUMBAI = "Polygon";
+
     // // // // // // // // // // // // // // // // // // // //
     // CONSTRUCTOR
     // // // // // // // // // // // // // // // // // // // //

@@ -18,6 +18,7 @@ export interface IBaseContracts extends IContractSet {
 
 export const setUp: ISetUpFunction<IBaseContracts> = async (
   deployer: SignerWithAddress,
+  onboarder: string,
   bridge: IBridgeAddresses
 ) => {
   // Deploy Sugarcane Manager Primary
@@ -56,13 +57,13 @@ export const setUp: ISetUpFunction<IBaseContracts> = async (
 
   // Set the onboarder
   // The address that can make it onboard users (on Base this is the Base relayer, on Goerli it is the defender address, and on the other chains it is their Sugarcane_Onboard_Executor)
-  await sugarcaneManager.setOnboarder(deployer.address);
-  console.log(`\n\n\--- Manager.Onboarder updated - ${deployer.address}`);
+  await sugarcaneManager.setOnboarder(onboarder);
+  console.log(`\n\n\--- BaseManager.Onboarder updated - ${onboarder}`);
 
   // Set the Sugarcane factory
   await sugarcaneManager.setSugarcaneFactory(sugarcaneFactory.address);
   console.log(
-    `--- Manager.SugarcaneFactory updated - ${sugarcaneFactory.address}`
+    `--- BaseManager.SugarcaneFactory updated - ${sugarcaneFactory.address}`
   );
 
   // Set the Sugarcane Investment Registry
@@ -70,12 +71,14 @@ export const setUp: ISetUpFunction<IBaseContracts> = async (
     sugarcaneInvestmentRegistry.address
   );
   console.log(
-    `--- Manager.InvestmentRegistry updated - ${sugarcaneInvestmentRegistry.address}`
+    `--- BaseManager.InvestmentRegistry updated - ${sugarcaneInvestmentRegistry.address}`
   );
 
   // Set the Sugarcane Badge
   await sugarcaneManager.setSugarcaneBadge(sugarcaneBadge.address);
-  console.log(`--- Manager.SugarcaneBadge updated - ${sugarcaneBadge.address}`);
+  console.log(
+    `--- BaseManager.SugarcaneBadge updated - ${sugarcaneBadge.address}`
+  );
 
   return {
     sugarcaneManager,

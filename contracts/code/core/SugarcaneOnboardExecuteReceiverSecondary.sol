@@ -37,8 +37,19 @@ contract SugarcaneOnboardExecuteReceiverSecondary is
     /**
      * @notice Initializes the contract.
      */
-    function initialize(address secondaryManagerAddress_) public initializer {
-        __SugarcaneOnboardExecuteReceiverBase_init(secondaryManagerAddress_);
+    function initialize(
+        uint256 chainId_,
+        address gateway_,
+        address secondaryManagerAddress_
+    ) public initializer {
+        __SugarcaneOnboardExecuteReceiverBase_init(
+            // uint256 chainId_,
+            chainId_,
+            // address gateway_,
+            gateway_,
+            // address managerAddress_
+            secondaryManagerAddress_
+        );
 
         __SugarcaneOnboardExecuteReceiverSecondary_init_unchained();
     }
@@ -65,8 +76,22 @@ contract SugarcaneOnboardExecuteReceiverSecondary is
         string calldata sourceAddress,
         bytes calldata payload
     )
-    Talks to the Sugarcane manager that is on this chain to run 
+    
     */
+    /**
+     * @notice Talks to the Sugarcane manager that is on this chain to run
+     */
+
+    function _execute(
+        string calldata sourceChain,
+        string calldata sourceAddress,
+        bytes calldata payload
+    ) internal override {
+        (uint256 nonce_, address signerAddress_) = abi.decode(
+            payload,
+            (uint256, address)
+        );
+    }
 
     // // // // // // // // // // // // // // // // // // // //
     // GAP

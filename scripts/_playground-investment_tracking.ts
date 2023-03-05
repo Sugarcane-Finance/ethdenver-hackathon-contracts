@@ -24,12 +24,12 @@ async function main() {
   // Record an investment
   // // // // // // // // // //
 
-  const managerContract = await connectToSugarcaneContract(
+  const baseManagerContract = await connectToSugarcaneContract(
     "SugarcaneManagerPrimaryBase",
     "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"
   );
 
-  await managerContract.recordInvestment(
+  await baseManagerContract.recordInvestment(
     // address signerAddress_,
     signerAddress_,
     // uint256 chainId_,

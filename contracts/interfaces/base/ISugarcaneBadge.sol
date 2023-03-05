@@ -45,6 +45,15 @@ interface ISugarcaneBadge is IERC1155Upgradeable, IManagerUtil {
     // // // // // // // // // // // // // // // // // // // //
     // CORE FUNCTIONS
     // // // // // // // // // // // // // // // // // // // //
+    function supportsInterface(bytes4 interfaceId)
+        external
+        view
+        override
+        returns (bool);
+
+    function setURI(string memory newuri) external;
+
+    function uri(uint256 badgeId) external view returns (string memory);
 
     /**
      * @dev Mints a badge id to user

@@ -98,6 +98,7 @@ contract SugarcaneManagerPrimaryBase is
     // // // // // // // // // // // // // // // // // // // //
     // CORE FUNCTIONS
     // // // // // // // // // // // // // // // // // // // //
+
     /**
      * @notice Talks to the investment registry to record an investment
      */
