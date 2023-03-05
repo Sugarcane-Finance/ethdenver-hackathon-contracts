@@ -57,7 +57,7 @@ export const setUp: ISetUpFunction<IBaseContracts> = async (
   // Set the onboarder
   // The address that can make it onboard users (on Base this is the Base relayer, on Goerli it is the defender address, and on the other chains it is their Sugarcane_Onboard_Executor)
   await sugarcaneManager.setOnboarder(deployer.address);
-  console.log(`--- Manager.Onboarder updated - ${deployer.address}`);
+  console.log(`\n\n\--- Manager.Onboarder updated - ${deployer.address}`);
 
   // Set the Sugarcane factory
   await sugarcaneManager.setSugarcaneFactory(sugarcaneFactory.address);

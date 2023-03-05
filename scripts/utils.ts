@@ -19,17 +19,24 @@ export const chainIds = {
 };
 
 // Badge Ids
-export const badgeIds = {
-  LIQUIDITY_PROVIDER: keccak256(
-    toUtf8Bytes("badge.LIQUIDITY_PROVIDER")
-  ).toLowerCase(),
-  STAKER: keccak256(toUtf8Bytes("badge.STAKER")).toLowerCase(),
-  LENDER: keccak256(toUtf8Bytes("badge.LENDER")).toLowerCase(),
-  FRIEND_REFER: keccak256(toUtf8Bytes("badge.FRIEND_REFER")).toLowerCase(),
-  INVEST_ONE: keccak256(toUtf8Bytes("badge.INVEST_ONE")).toLowerCase(),
-  INVEST_FIVE: keccak256(toUtf8Bytes("badge.INVEST_FIVE")).toLowerCase(),
-  INVEST_TEN: keccak256(toUtf8Bytes("badge.INVEST_TEN")).toLowerCase(),
-};
+export const badgeIds: Record<string, string> = {};
+
+export const badgeListing: string[] = [
+  "FRIEND_REFER",
+  "LIQUIDITY_PROVIDER",
+  "STAKER",
+  "LENDER",
+  "INVEST_ONE",
+  "INVEST_FIVE",
+  "INVEST_TEN",
+];
+
+const constructBadgeId = (badgeId: string) =>
+  keccak256(toUtf8Bytes(`badge.${badgeId}`)).toLowerCase();
+
+badgeListing.forEach((badgeId: string) => {
+  badgeIds[badgeId] = constructBadgeId(badgeId);
+});
 
 export const badgeImageCIDs = {
   LIQUIDITY_PROVIDER: "QmQU19gBFVZcwEUmg3AXYPkcX6YXu3goq1KuuWSiAaGMgD",

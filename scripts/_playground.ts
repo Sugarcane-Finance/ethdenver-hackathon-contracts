@@ -1,7 +1,13 @@
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { ethers } from "hardhat";
 
-import { chainIds, connectToSugarcaneContract, protocolIds } from "./utils";
+import {
+  badgeIds,
+  badgeListing,
+  chainIds,
+  connectToSugarcaneContract,
+  protocolIds,
+} from "./utils";
 
 async function main() {
   // Addresses
@@ -22,16 +28,18 @@ async function main() {
     "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"
   );
 
-  // await managerContract.recordInvestment(
-  //   // address signerAddress_,
-  //   signerAddress_,
-  //   // uint256 chainId_,
-  //   chainIds.baseGoerli,
-  //   // uint256 protocolId_,
-  //   protocolIds.AAVE,
-  //   // uint256 initialAmountUsd_
-  //   250
-  // );
+  /*
+  await managerContract.recordInvestment(
+    // address signerAddress_,
+    signerAddress_,
+    // uint256 chainId_,
+    chainIds.baseGoerli,
+    // uint256 protocolId_,
+    protocolIds.AAVE,
+    // uint256 initialAmountUsd_
+    250
+  );
+  */
 
   // // // // // // // // // //
   // Read all the investments
@@ -46,7 +54,7 @@ async function main() {
     signerAddress_
   );
 
-  console.log("\n\n-=-=- Account Investments:");
+  console.log("\n\n-=-=- Account Investment Ids:");
   console.log(accountInvestments);
 
   // // // // // // // // // //
@@ -59,6 +67,32 @@ async function main() {
 
   console.log("\n\n-=-=- Investment Details:");
   console.log(investmentDetails);
+
+  // // // // // // // // // //
+  // Read the badges
+  // // // // // // // // // //
+  const badgeContract = await connectToSugarcaneContract(
+    "SugarcaneBadge",
+    "0x610178dA211FEF7D417bC0e6FeD39F05609AD788"
+  );
+
+  // Ask for the balance of all the badges
+  const badges = await badgeContract.balanceOfBatch(
+    // address[] memory accounts,
+    badgeListing.map(() => signerAddress_),
+    // uint256[] memory ids
+    badgeListing.map((badge) => badgeIds[badge])
+  );
+
+  // Map the badge amount to their names
+  const badgeBalanceMap: Record<string, string> = {};
+
+  badgeListing.forEach((badge, index) => {
+    badgeBalanceMap[badge] = badges[index].toNumber();
+  });
+
+  console.log("\n\n-=-=- Badges:");
+  console.log(badgeBalanceMap);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
