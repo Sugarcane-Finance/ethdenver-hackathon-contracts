@@ -14,6 +14,7 @@
     "console-local": "npx hardhat console --network localhost",
     "exec-deploy-local": "npx hardhat run scripts/deploy-all.ts --network localhost",
     "exec-deploy-base-goerli": "npx hardhat run scripts/deploy-all.ts --network baseGoerli",
+    "exec-playground-investment_tracking": "npx hardhat run scripts/_playground-investment_tracking.ts --network localhost",
     "exec-playground": "npx hardhat run scripts/_playground.ts --network localhost"
   },
   "husky": {
