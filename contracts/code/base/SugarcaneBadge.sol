@@ -109,7 +109,7 @@ contract SugarcaneBadge is
         uint256 id,
         uint256 amount
     ) public onlySugarcaneManager {
-        require(balanceOf(to, id) == 0, "User already has badge.");
+        require(balanceOf(to, id) == 0, "Badge: Address has badge");
         _mint(to, id, amount, "");
     }
 
