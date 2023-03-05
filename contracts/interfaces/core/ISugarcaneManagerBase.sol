@@ -26,6 +26,20 @@ interface ISugarcaneManagerBase is ISugarcaneCore {
     );
 
     /**
+     * @notice Emitted when the execute onboard receiver address is updated
+     * @param admin The admin that made the update
+     * @param chainId The chain id of the chain this is deployed on
+     * @param oldExecuteOnboardReceiver The old execute onboard receiver address
+     * @param newExecuteOnboardReceiver The new execute onboard receiver address
+     */
+    event ExecuteOnboardReceiverUpdated(
+        address indexed admin,
+        uint256 chainId,
+        address indexed oldExecuteOnboardReceiver,
+        address indexed newExecuteOnboardReceiver
+    );
+
+    /**
      * @notice Emitted when the gas service address is updated
      * @param admin The admin that made the update
      * @param chainId The chain id of the chain this is deployed on

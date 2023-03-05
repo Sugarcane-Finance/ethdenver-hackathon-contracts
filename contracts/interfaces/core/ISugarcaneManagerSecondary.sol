@@ -14,13 +14,20 @@ interface ISugarcaneManagerSecondary is ISugarcaneManagerBase {
     // // // // // // // // // // // // // // // // // // // //
     // GETTERS
     // // // // // // // // // // // // // // // // // // // //
+
+    /**
+     * @notice Returns the execute onboard receiver address
+     */
+    function executeOnboardReceiver() external view returns (address);
+
     // // // // // // // // // // // // // // // // // // // //
     // CORE FUNCTIONS
     // // // // // // // // // // // // // // // // // // // //
-    /*
-    [WRITE] – onboardUser(address userAddress_)
-    Only the Sugarcane_Onboard_Execute_Receiver_Secondary contract can talk to this.
-    Talks to the Sugarcane_Factory.createHoldingsAccount(userAddress_) to create holdings on this chain
-    Talks to the gateway() to let the primary manager know what this chain’s holdings is
-    */
+
+    /**
+     * @notice Sets the address of the execute Onboard Receiver
+     * @param executeOnboardReceiver_ the address of the execute Onboard Receiver
+     */
+    function setExecuteOnboardReceiver(address executeOnboardReceiver_)
+        external;
 }

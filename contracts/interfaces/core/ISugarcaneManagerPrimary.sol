@@ -13,20 +13,6 @@ interface ISugarcaneManagerPrimary is ISugarcaneManagerBase {
     // // // // // // // // // // // // // // // // // // // //
 
     /**
-     * @notice Emitted when the execute onboard receiver address is updated
-     * @param admin The admin that made the update
-     * @param chainId The chain id of the chain this is deployed on
-     * @param oldExecuteOnboardReceiver The old execute onboard receiver address
-     * @param newExecuteOnboardReceiver The new execute onboard receiver address
-     */
-    event ExecuteOnboardReceiverUpdated(
-        address indexed admin,
-        uint256 chainId,
-        address indexed oldExecuteOnboardReceiver,
-        address indexed newExecuteOnboardReceiver
-    );
-
-    /**
      * @notice Emitted when the secondary manager address at a specific chain is updated
      * @param admin The admin that made the update
      * @param chainId The chain id of the chain this is deployed on
@@ -100,12 +86,6 @@ interface ISugarcaneManagerPrimary is ISugarcaneManagerBase {
      */
     function setSecondaryManager(uint256 chainId_, address secondaryManager_)
         external;
-
-    /**
-     * @notice Does checks for valid request and talks to Sugarcane_Factory to create Holdings address
-     * @param signerAddress_ the address of the account to onboard
-     */
-    function onboardAccount(address signerAddress_) external override;
 
     /**
      * @notice This is a function only the Sugarcane_Onboard_Execute_Receiver_Primary contract can change it is

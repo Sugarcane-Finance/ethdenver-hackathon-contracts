@@ -248,7 +248,7 @@ contract SugarcaneManagerPrimary is
      */
     function onboardAccount(address signerAddress_)
         external
-        override(ISugarcaneManagerPrimary, SugarcaneManagerBase)
+        override(ISugarcaneManagerBase, SugarcaneManagerBase)
         nonReentrant
         whenNotPausedExceptAdmin
         onlyOnboarder
@@ -256,21 +256,17 @@ contract SugarcaneManagerPrimary is
         // Run onboard locally
         _onboardAccount(signerAddress_);
 
-        uint256 nonce_ = nonce;
-        bytes memory modifiedPayload = abi.encode(nonce_, signerAddress_);
-
         // Onboard on mumbai
         _crossChainOnboardInitiate(
             CHAIN_ID_MUMBAI,
             CHAIN_NAME_MUMBAI,
-            signerAddress_,
-            modifiedPayload
+            signerAddress_
         );
 
         // Onboard on arbitrum
         // _crossChainOnboardInitiate(CHAIN_ID_ARBITRUM_GOERLI, CHAIN_NAME_ARBITRUM_GOERLI, signerAddress_);
 
-        nonce = nonce_ + 1;
+        nonce = nonce + 1;
     }
 
     /**
@@ -278,14 +274,15 @@ contract SugarcaneManagerPrimary is
      * @param chainId_ the id of the chain to onboard the signer on
      * @param chainName_  the name of the chain to onboard the signer on
      * @param signerAddress_ the address of the account to onboard
-     * @param payload_ the payload to send to the secondary chain
      */
     function _crossChainOnboardInitiate(
         uint256 chainId_,
         string memory chainName_,
-        address signerAddress_,
-        bytes memory payload_
+        address signerAddress_
     ) internal {
+        uint256 nonce_ = nonce;
+        bytes memory modifiedPayload = abi.encode(nonce_, signerAddress_);
+
         // Send a message to the secondary chain to continue onboarding
         _axelarGateway().callContract(
             // string memory destinationChain,
@@ -295,7 +292,7 @@ contract SugarcaneManagerPrimary is
                 abi.encodePacked(_secondaryManager(chainId_).managerAddress)
             ),
             // bytes memory payload
-            payload_
+            modifiedPayload
         );
     }
 

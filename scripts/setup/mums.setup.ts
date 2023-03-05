@@ -10,32 +10,32 @@ import {
   ISetUpFunction,
 } from "../utils";
 
-export interface IGoerliContracts extends IContractSet {
+export interface IMumbaiContracts extends IContractSet {
   // sugarcaneManager: Contract;
   // sugarcaneFactory: Contract;
   // sugarcaneOnboardExecuteReceiverSecondary: Contract;
 }
 
-export const setUp: ISetUpFunction<IGoerliContracts> = async (
+export const setUp: ISetUpFunction<IMumbaiContracts> = async (
   deployer: SignerWithAddress,
   onboarder: string,
   bridge: IBridgeAddresses
 ) => {
-  // Deploy Sugarcane Manager Primary
-  const goerliSugarcaneManager = await deploySugarcaneContract(
+  // Deploy Sugarcane Manager Secondary
+  const mumbaiSugarcaneManager = await deploySugarcaneContract(
     deployer,
-    "SugarcaneManagerPrimary",
-    [chainIds.goerli, bridge.gatewayAddress, bridge.gasServiceAddress]
+    "SugarcaneManagerSecondary",
+    [chainIds.mumbai, bridge.gatewayAddress, bridge.gasServiceAddress]
   );
 
   // Deploy Sugarcane Factory
   const sugarcaneFactory = await deploySugarcaneContract(
     deployer,
     "SugarcaneFactory",
-    [goerliSugarcaneManager.address]
+    [mumbaiSugarcaneManager.address]
   );
 
-  // Deploy Sugarcane Onboard Execute Receiver Primary
+  // Deploy Sugarcane Onboard Execute Receiver Secondary
   const sugarcaneOnboardExecuteReceiverPrimary = await deploySugarcaneContract(
     deployer,
     "SugarcaneOnboardExecuteReceiverPrimary",
